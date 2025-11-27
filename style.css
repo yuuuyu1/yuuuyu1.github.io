@@ -188,8 +188,13 @@ main:not(.hero) {
     color: #1da1f2; /* X（Twitter）のブランドカラー（青） */
 }
 
-/* 3. note / ブログ アイコン */
-/* noteのロゴにカラーはないため、今回はボタンの色（緑）に合わせて統一感を出す */
-.note-card h3 .contact-icon {
-    color: #4CAF50; /* 緑系 */
+/* --- noteロゴのカスタム画像設定 (画像埋め込みの場合) --- */
+.custom-logo {
+    width: 25px;       /* アイコンと同じくらいのサイズに調整 */
+    height: 25px;
+    vertical-align: middle; /* テキストの真ん中に来るように調整 */
+    margin-right: 10px;
+    /* ロゴガイドラインに従い、特別なCSS処理は加えない（色を変更しないなど） */
 }
+
+/* 既に設定しているnoteのボタンの色（#4CAF50）はそのまま残し、統一感を保ちます */
