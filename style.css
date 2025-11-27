@@ -1,26 +1,27 @@
-/* リセットCSS: ブラウザのデフォルト設定を統一 */
+/* リセットCSS: (これはそのまま) */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* --- 全体のダークテーマ設定 --- */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif; /* シンプルなフォント */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
-    background-color: #222222; /* やや灰色がかった背景 */
-    color: #FFF;
+    background-color: #121212; /* 濃い黒背景 */
+    color: #f4f4f4; /* 明るいテキスト */
 }
 
 /* ヘッダーのスタイル */
 header {
-    background-color: #111111;
-    color: #FFF;
+    background-color: #1e1e1e; /* ヘッダーは少し明るい黒 */
+    color: #f4f4f4;
     padding: 15px 5%;
     display: flex;
-    justify-content: space-between; /* ロゴとナビゲーションを両端に配置 */
+    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #333333;
+    border-bottom: 1px solid #333; /* 濃いボーダー */
 }
 
 .logo {
@@ -40,19 +41,19 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #FFF;
-    transition: color 0.3s; /* ホバー時の変化を滑らかに */
+    color: #f4f4f4; /* リンクの色も白く */
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {
-    color: #007bff; /* 青をアクセントカラーに */
+    color: #7289da; /* アクセントカラーをDiscordの色に変更 */
 }
 
 /* メインコンテンツ (ヒーローセクション) */
 .hero {
     text-align: center;
     padding: 100px 20px;
-    min-height: 60vh; /* 画面の高さの60%を確保 */
+    min-height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,18 +62,14 @@ nav ul li a:hover {
 
 .hero h1 {
     font-size: 3em;
-    margin-bottom: 20px;
-    color: #FFF;
+    margin-bottom: 15px;
+    color: #f4f4f4; /* 文字色を白に */
 }
 
-.hero p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
-}
-
+/* ボタンのスタイル (以前の青ボタンからDiscordカラーへ変更) */
 .button {
     display: inline-block;
-    background-color: #007bff;
+    background-color: #7289da; /* Discordカラー */
     color: white;
     padding: 10px 25px;
     text-decoration: none;
@@ -82,16 +79,17 @@ nav ul li a:hover {
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #5b6fb6;
 }
 
 /* フッターのスタイル */
 footer {
     text-align: center;
     padding: 15px 0;
-    background-color: #333;
-    color: #fff;
+    background-color: #1e1e1e;
+    color: #ccc;
     font-size: 0.9em;
+    border-top: 1px solid #333;
 }
 
 /* ページごとのメインコンテンツの一般的なスタイル */
@@ -101,24 +99,73 @@ main:not(.hero) {
     margin: 0 auto;
 }
 
-/* フォームのシンプルなスタイル (コンタクトページ用) */
-.contact-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+/* ------------------------------------------------------------------ */
+/* --- コンタクトページ専用のスタイル (カード形式) --- (前回提案したもの) */
+/* ------------------------------------------------------------------ */
+
+.intro-text {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.1em;
 }
 
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+/* カードの背景は濃いめの黒 (画像に近くなるように) */
+.contact-card {
+    background-color: #1e1e1e; 
+    color: #f4f4f4;
+    padding: 30px;
+    border-radius: 12px;
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    max-width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* 影を濃く */
+    border: 1px solid #333; /* 境界線を薄く入れる */
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.contact-form textarea {
-    resize: vertical;
-    height: 150px;
+.contact-card:hover {
+    transform: translateY(-5px);
+    border-color: #7289da; /* ホバーでアクセントカラーのボーダー */
 }
+
+.contact-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+.contact-card p {
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+
+.card-button {
+    /* ... ボタンのスタイルは前回同様で、色もそのまま使用 */
+    display: block;
+    text-align: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-top: auto;
+}
+
+/* ボタンの色の定義はそのまま */
+.discord-button { background-color: #7289da; color: white; }
+.discord-button:hover { background-color: #5b6fb6; }
+.x-button { background-color: #1da1f2; color: white; }
+.x-button:hover { background-color: #0c85d0; }
+.note-button { background-color: #4CAF50; color: white; }
+.note-button:hover { background-color: #45a049; }
