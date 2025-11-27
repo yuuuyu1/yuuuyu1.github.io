@@ -163,10 +163,10 @@ main:not(.hero) {
 }
 
 /* ボタンの色の定義はそのまま */
-.discord-button { background-color: #7289da; color: white; }
-.discord-button:hover { background-color: #5b6fb6; }
-.x-button { background-color: #1da1f2; color: white; }
-.x-button:hover { background-color: #0c85d0; }
+.discord-button { background-color: #4CAF50; color: white; }
+.discord-button:hover { background-color: #45a049; }
+.x-button { background-color: #4CAF50; color: white; }
+.x-button:hover { background-color: #45a049; }
 .note-button { background-color: #4CAF50; color: white; }
 .note-button:hover { background-color: #45a049; }
 /*ロゴをカラーにする*/
@@ -185,7 +185,7 @@ main:not(.hero) {
 
 /* 2. X (Twitter) アイコン */
 .x-card h3 .contact-icon {
-    color: #1da1f2; /* X（Twitter）のブランドカラー（青） */
+    color: #111; /* X（Twitter）のブランドカラー（青） */
 }
 
 /* --- noteロゴのカスタム画像設定 (画像埋め込みの場合) --- */
