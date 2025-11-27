@@ -1,0 +1,124 @@
+/* リセットCSS: ブラウザのデフォルト設定を統一 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* シンプルなフォント */
+    line-height: 1.6;
+    background-color: #f4f4f9; /* やや灰色がかった背景 */
+    color: #333;
+}
+
+/* ヘッダーのスタイル */
+header {
+    background-color: #fff;
+    color: #333;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between; /* ロゴとナビゲーションを両端に配置 */
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* ナビゲーションのスタイル */
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s; /* ホバー時の変化を滑らかに */
+}
+
+nav ul li a:hover {
+    color: #007bff; /* 青をアクセントカラーに */
+}
+
+/* メインコンテンツ (ヒーローセクション) */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 60vh; /* 画面の高さの60%を確保 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* フッターのスタイル */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.9em;
+}
+
+/* ページごとのメインコンテンツの一般的なスタイル */
+main:not(.hero) {
+    padding: 40px 5%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* フォームのシンプルなスタイル (コンタクトページ用) */
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    height: 150px;
+}
