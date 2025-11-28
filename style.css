@@ -32,7 +32,7 @@ header {
 }
 /* --- メインコンテンツの調整 --- */
 main {
-    padding-top: 70px; /* ヘッダーの高さ（約60px）よりも少し大きめの余白を確保 */
+    padding-top: 90px;
 }
 
 .logo {
