@@ -1,11 +1,13 @@
-/* リセットCSS: (これはそのまま) */
+/* ================================================================== */
+/* 0. リセットと基本設定                   */
+/* ================================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* --- 全体のダークテーマ設定 --- */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
@@ -13,7 +15,10 @@ body {
     color: #f4f4f4; /* 明るいテキスト */
 }
 
-/* --- ヘッダーのスタイル (修正) --- */
+/* ------------------------------------------------------------------ */
+/* 1. ヘッダーとナビゲーション             */
+/* ------------------------------------------------------------------ */
+
 header {
     background-color: #1e1e1e;
     color: #f4f4f4;
@@ -23,16 +28,12 @@ header {
     align-items: center;
     border-bottom: 1px solid #333;
 
-    /* 上部固定 */
-    position: fixed; /* 画面に対して位置を固定する */
-    top: 0;          /* 画面の上端に配置する */
-    left: 0;         /* 画面の左端に配置する */
-    width: 100%;     /* 幅を画面全体に広げる */
-    z-index: 1000;   /* 他の要素よりも手前に表示されるようにする */
-}
-/* --- メインコンテンツの調整 --- */
-main {
-    padding-top: 90px;
+    /* 上部固定 (ここが重要) */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .logo {
@@ -40,7 +41,6 @@ main {
     font-weight: bold;
 }
 
-/* ナビゲーションのスタイル */
 nav ul {
     list-style: none;
     display: flex;
@@ -52,35 +52,35 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #f4f4f4; /* リンクの色も白く */
+    color: #f4f4f4;
     transition: color 0.3s;
 }
 
 nav ul li a:hover {
-    color: #7289da; /* アクセントカラーをDiscordの色に変更 */
+    color: #7289da; /* Discordカラーのアクセント */
 }
 
-/* メインコンテンツ (ヒーローセクション) */
-.hero {
-    text-align: center;
-    padding: 100px 20px;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* ------------------------------------------------------------------ */
+/* 2. メインコンテンツと共通スタイル       */
+/* ------------------------------------------------------------------ */
+
+/* ヘッダー固定によるコンテンツの重なり解消 (すべてのメインコンテンツに適用) */
+main {
+    padding-top: 80px; /* ヘッダーの高さより少し多めに設定 (90pxだと少し過剰なため調整) */
 }
 
-.hero h1 {
-    font-size: 3em;
-    margin-bottom: 15px;
-    color: #f4f4f4; /* 文字色を白に */
+/* ページごとの一般的なメインコンテンツのスタイル */
+main:not(.hero-section) { /* .hero-sectionを持つmainには別のpaddingが適用されます */
+    padding: 40px 5%;
+    max-width: 1000px;
+    margin: 0 auto;
+    /* padding-top: 80px; はすでに上の main { ... } で適用されています */
 }
 
-/* ボタンのスタイル (以前の青ボタンからDiscordカラーへ変更) */
+/* ボタンの共通スタイル */
 .button {
     display: inline-block;
-    background-color: #7289da; /* Discordカラー */
+    background-color: #7289da;
     color: white;
     padding: 10px 25px;
     text-decoration: none;
@@ -93,25 +93,173 @@ nav ul li a:hover {
     background-color: #5b6fb6;
 }
 
-/* フッターのスタイル */
-footer {
-    text-align: center;
-    padding: 15px 0;
-    background-color: #1e1e1e;
-    color: #ccc;
+/* 共通ボタンサイズ */
+.button-small {
+    padding: 8px 15px;
     font-size: 0.9em;
-    border-top: 1px solid #333;
 }
 
-/* ページごとのメインコンテンツの一般的なスタイル */
-main:not(.hero) {
-    padding: 40px 5%;
-    max-width: 1000px;
-    margin: 0 auto;
+.button-lg {
+    padding: 15px 30px;
+    font-size: 1.1em;
 }
 
 /* ------------------------------------------------------------------ */
-/* --- コンタクトページ専用のスタイル (カード形式) --- (前回提案したもの) */
+/* 3. ホームページ (index.html) スタイル   */
+/* ------------------------------------------------------------------ */
+
+/* ヒーローセクション */
+.hero-section {
+    text-align: center;
+    padding: 100px 5%;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* mainのpadding-topを上書きして、ヒーローセクションの見た目を調整 */
+    padding-top: 150px; 
+}
+
+.hero-section h1 {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    max-width: 800px;
+}
+
+.hero-section p {
+    font-size: 1.3em;
+    color: #ccc;
+    margin-bottom: 40px;
+    max-width: 700px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.button-secondary {
+    background-color: #333;
+    border: 2px solid #7289da;
+    color: #7289da;
+}
+.button-secondary:hover {
+    background-color: #444;
+}
+
+/* 実績/統計のハイライトエリア */
+.stats-highlight-section {
+    text-align: center;
+    padding: 40px 5%;
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+.stats-highlight-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #f4f4f4;
+}
+
+.stats-container-sm {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto 20px;
+}
+
+.stat-item-sm {
+    flex-basis: 30%;
+    text-align: center;
+}
+
+.stat-number-sm {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #4ac996;
+    margin-bottom: 5px;
+}
+
+.stat-label-sm {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.button-link {
+    background: none;
+    color: #7289da;
+    padding: 0;
+    font-weight: normal;
+    text-decoration: underline;
+}
+.button-link:hover {
+    color: #5b6fb6;
+    background: none;
+}
+
+/* 制作物のハイライトエリア */
+.projects-highlight-section {
+    padding: 60px 5%;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.projects-highlight-section h3 {
+    font-size: 1.8em;
+    margin-bottom: 40px;
+}
+
+.highlight-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.highlight-card {
+    background-color: #1a1a2e;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: white;
+}
+.card-tag.tag-red { background-color: #f75a5a; }
+.card-tag.tag-green { background-color: #4ac970; }
+.card-tag.tag-pink { background-color: #8c5af7; }
+
+.highlight-card h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.highlight-card p {
+    color: #ccc;
+    font-size: 0.95em;
+    margin-bottom: 25px;
+    flex-grow: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. コンタクトページ専用スタイル         */
 /* ------------------------------------------------------------------ */
 
 .intro-text {
@@ -128,16 +276,15 @@ main:not(.hero) {
     padding: 20px 0;
 }
 
-/* カードの背景は濃いめの黒 (画像に近くなるように) */
 .contact-card {
-    background-color: #1e1e1e; 
+    background-color: #1e1e1e;
     color: #f4f4f4;
     padding: 30px;
     border-radius: 12px;
     width: 100%;
     max-width: 300px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* 影を濃く */
-    border: 1px solid #333; /* 境界線を薄く入れる */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    border: 1px solid #333;
     transition: transform 0.3s;
     display: flex;
     flex-direction: column;
@@ -146,7 +293,7 @@ main:not(.hero) {
 
 .contact-card:hover {
     transform: translateY(-5px);
-    border-color: #7289da; /* ホバーでアクセントカラーのボーダー */
+    border-color: #7289da;
 }
 
 .contact-card h3 {
@@ -159,10 +306,10 @@ main:not(.hero) {
 .contact-card p {
     font-size: 0.95em;
     margin-bottom: 20px;
+    flex-grow: 1; /* ボタンを下に揃える */
 }
 
 .card-button {
-    /* ... ボタンのスタイルは前回同様で、色もそのまま使用 */
     display: block;
     text-align: center;
     padding: 12px 15px;
@@ -173,64 +320,66 @@ main:not(.hero) {
     margin-top: auto;
 }
 
-/* ボタンの色の定義はそのまま */
-.discord-button { background-color: #4CAF50; color: white; }
-.discord-button:hover { background-color: #45a049; }
-.x-button { background-color: #4CAF50; color: white; }
-.x-button:hover { background-color: #45a049; }
+/* --- コンタクトカードのブランドカラー定義 --- */
+
+/* Discordボタン: 紫に修正 */
+.discord-button { background-color: #7289da; color: white; }
+.discord-button:hover { background-color: #5b6fb6; }
+
+/* X (Twitter) ボタン: 黒/濃いグレーに修正 (Xのブランドカラー) */
+.x-button { background-color: #101010; color: white; }
+.x-button:hover { background-color: #202020; }
+
+/* note ボタン: 緑に修正 */
 .note-button { background-color: #4CAF50; color: white; }
 .note-button:hover { background-color: #45a049; }
-/*ロゴをカラーにする*/
-/* --- コンタクトページ - アイコンのスタイル --- */
+
+/* --- コンタクトアイコンのカラー定義 --- */
 .contact-icon {
-    margin-right: 10px; /* タイトルテキストとの間にスペースを空ける */
-    font-size: 1.2em; /* アイコンを少し大きくする */
+    margin-right: 10px;
+    font-size: 1.2em;
 }
 
-/* カードごとにアイコンの色をブランドカラーに設定 */
-
-/* 1. Discord アイコン */
 .discord-card h3 .contact-icon {
-    color: #7289da; /* Discordのブランドカラー（紫） */
+    color: #7289da; /* Discordカラー */
 }
 
-/* 2. X (Twitter) アイコン */
 .x-card h3 .contact-icon {
-    color: #FFF; /* X（Twitter）のブランドカラー（青） */
+    color: #FFF; /* X（Twitter）は白 */
 }
 
-/* --- noteロゴのカスタム画像設定 (画像埋め込みの場合) --- */
-.custom-logo {
-    width: 25px;       /* アイコンと同じくらいのサイズに調整 */
+.custom-logo, .contact-svg-icon {
+    width: 25px;
     height: 25px;
-    vertical-align: middle; /* テキストの真ん中に来るように調整 */
-    margin-right: 10px;
-    /* ロゴガイドラインに従い、特別なCSS処理は加えない（色を変更しないなど） */
-}
-
-/* --- SVGアイコンの共通スタイル (直接埋め込んだSVG用) --- */
-
-.contact-svg-icon {
-    vertical-align: middle; /* テキストの真ん中に来るように調整 */
+    vertical-align: middle;
     margin-right: 10px;
 }
-/* --- 自己紹介ページ (about.html) 専用スタイル --- */
+
+
+/* ------------------------------------------------------------------ */
+/* 5. 自己紹介ページ (about.html) スタイル */
+/* ------------------------------------------------------------------ */
 
 /* プロフィールエリア (画像とテキストの左右配置) */
 .profile-section {
     display: flex;
     gap: 40px;
-    align-items: center; /* 縦方向中央揃え */
+    align-items: center;
     padding-bottom: 40px;
     border-bottom: 1px solid #333;
+}
+
+/* 画像がない場合も対応できるように、display: noneの記述は削除しました。 */
+.profile-image-container {
+    flex-shrink: 0;
 }
 
 .profile-image {
     width: 200px;
     height: 200px;
-    border-radius: 50%; /* 画像を丸くする */
+    border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #7289da; /* Discordカラーのフレーム */
+    border: 4px solid #7289da;
 }
 
 .profile-text h2 {
@@ -249,12 +398,7 @@ main:not(.hero) {
     gap: 15px;
 }
 
-.button-small {
-    padding: 8px 15px;
-    font-size: 0.9em;
-}
-
-/* --- 実績/統計エリア (IMG_8340.jpegを再現) --- */
+/* 実績/統計エリア */
 .stats-section {
     padding: 60px 0;
     text-align: center;
@@ -263,7 +407,7 @@ main:not(.hero) {
 .stats-section h3 {
     font-size: 1.8em;
     margin-bottom: 40px;
-    color: #f4f4f4; /* 白文字 */
+    color: #f4f4f4;
 }
 
 .stats-container {
@@ -272,17 +416,18 @@ main:not(.hero) {
     gap: 20px;
     max-width: 1000px;
     margin: 0 auto;
+    flex-wrap: nowrap; /* 強制的に横並びを試みる */
 }
 
 .stat-item {
-    flex-basis: 25%; /* 4分割 */
+    flex-basis: 25%;
     text-align: center;
 }
 
 .stat-number {
     font-size: 3em;
     font-weight: bold;
-    color: #4ac996; /* 添付画像と同じ緑色 */
+    color: #4ac996;
     margin-bottom: 5px;
 }
 
@@ -292,7 +437,7 @@ main:not(.hero) {
 }
 
 
-/* --- スキルとサービス紹介エリア --- */
+/* スキルとサービス紹介エリア */
 .services-section {
     padding: 40px 0 60px;
 }
@@ -328,7 +473,7 @@ main:not(.hero) {
     font-size: 0.9em;
 }
 
-/* --- サービス紹介カード (IMG_8338.jpgを再現) --- */
+/* サービス紹介カード */
 .bot-cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -338,11 +483,11 @@ main:not(.hero) {
 }
 
 .bot-card {
-    background-color: #1a1a2e; /* 添付画像に近い濃い背景 */
+    background-color: #1a1a2e;
     padding: 20px;
     border-radius: 10px;
     width: 100%;
-    max-width: 450px; /* カードの最大幅 */
+    max-width: 450px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
@@ -359,7 +504,7 @@ main:not(.hero) {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #fff; /* アイコン背景 */
+    background-color: #fff;
     border: 2px solid #5a5a7a;
 }
 
@@ -381,10 +526,9 @@ main:not(.hero) {
     font-size: 0.95em;
     color: #ccc;
     margin-bottom: 20px;
-    flex-grow: 1; /* ボタンを下に揃えるために重要 */
+    flex-grow: 1;
 }
 
-/* カードごとのボタンカラー調整 */
 .bot-button {
     text-align: center;
     padding: 10px 15px;
@@ -396,31 +540,48 @@ main:not(.hero) {
 }
 
 .button-purple {
-    background-color: #725af7; /* 添付画像に近い紫 */
+    background-color: #725af7;
     color: white;
 }
 .button-green {
-    background-color: #4ac970; /* 添付画像に近い緑 */
+    background-color: #4ac970;
+    color: white;
+}
+.button-pink {
+    background-color: #8c5af7;
     color: white;
 }
 .bot-button:hover {
     opacity: 0.8;
 }
 
-/* --- レスポンシブ対応 (スマートフォン向け) --- */
+/* ------------------------------------------------------------------ */
+/* 6. フッターとレスポンシブ               */
+/* ------------------------------------------------------------------ */
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #1e1e1e;
+    color: #ccc;
+    font-size: 0.9em;
+    border-top: 1px solid #333;
+}
+
+/* レスポンシブ対応 (768px以下) */
 @media (max-width: 768px) {
     .profile-section {
-        flex-direction: column; /* 画像とテキストを縦並びに */
+        flex-direction: column;
         text-align: center;
     }
     .profile-image-container {
         margin-bottom: 20px;
     }
     .stats-container {
-        flex-wrap: wrap; /* 統計項目を折り返す */
+        flex-wrap: wrap;
     }
     .stat-item {
-        flex-basis: 45%; /* 2列表示 */
+        flex-basis: 45%;
         margin-bottom: 20px;
     }
 }
