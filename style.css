@@ -929,3 +929,25 @@ footer {
         max-width: 90%;
     }
 }
+/*サーバー紹介・コンタクト*/
+@media (max-width: 768px) {
+    /* ... 既存の修正 ... */
+
+    /* コンタクトカード */
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .contact-card {
+        max-width: 90%;
+    }
+
+    /* Discordサーバー紹介ページ */
+    .server-cards-container, .support-bot-cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .server-card, .support-bot-card {
+        max-width: 90%;
+    }
+}
