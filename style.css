@@ -323,17 +323,17 @@ main:not(.hero-section) {
 
 /* --- コンタクトカードのブランドカラー定義 --- */
 
-/* Discordボタン: 紫に修正 */
-.discord-button { background-color: #7289da; color: white; }
+/* Discordボタン */
+.discord-button { background-color: #4CAF50; color: white; }
 .discord-button:hover { background-color: #5b6fb6; }
 
-/* X (Twitter) ボタン: 黒/濃いグレーに修正 (Xのブランドカラー) */
+/* X (Twitter) ボタン */
 .x-button { background-color: #4CAF50; color: white; }
-.x-button:hover { background-color: #202020; }
+.x-button:hover { background-color: #5b6fb6; }
 
-/* note ボタン: 緑に修正 */
+/* note ボタン */
 .note-button { background-color: #4CAF50; color: white; }
-.note-button:hover { background-color: #45a049; }
+.note-button:hover { background-color: #5b6fb6; }
 
 /* --- コンタクトアイコンのカラー定義 --- */
 .contact-icon {
