@@ -328,7 +328,7 @@ main:not(.hero-section) {
 .discord-button:hover { background-color: #5b6fb6; }
 
 /* X (Twitter) ボタン: 黒/濃いグレーに修正 (Xのブランドカラー) */
-.x-button { background-color: #101010; color: white; }
+.x-button { background-color: #4CAF50; color: white; }
 .x-button:hover { background-color: #202020; }
 
 /* note ボタン: 緑に修正 */
