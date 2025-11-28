@@ -59,7 +59,40 @@ nav ul li a {
 nav ul li a:hover {
     color: #7289da; /* Discordカラーのアクセント */
 }
+/* --- ナビゲーションのスタイル (修正) --- */
 
+nav ul li a {
+    text-decoration: none;
+    color: #f4f4f4;
+    transition: color 0.3s;
+    /* リンクを下方向にスペースを作る */
+    padding-bottom: 5px; 
+    position: relative; /* 疑似要素の基準点にする */
+}
+
+/* ホバー時の下線エフェクト (動きはしませんが、視覚的なフィードバックを追加) */
+nav ul li a:hover {
+    color: #7289da;
+}
+
+/* --- アクティブなページを示す下線--- */
+
+/* HTMLで、現在表示しているページのリンクに 'active' クラスを追加します */
+nav ul li a.active {
+    color: #7289da; /* アクティブなリンクの色をDiscordカラーにする */
+}
+
+/* アクティブなリンクの下に下線を作成する */
+nav ul li a.active::after {
+    content: ''; /* 疑似要素には content が必須 */
+    position: absolute;
+    left: 0;
+    bottom: 0; /* リンクの真下に配置 */
+    width: 100%; /* リンクの幅全体に広げる */
+    height: 3px; /* 下線の太さ */
+    background-color: #7289da; /* 下線の色 */
+    border-radius: 1.5px; /* 角を少し丸くする */
+}
 /* ------------------------------------------------------------------ */
 /* 2. メインコンテンツと共通スタイル       */
 /* ------------------------------------------------------------------ */
