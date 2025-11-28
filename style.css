@@ -203,3 +203,217 @@ main:not(.hero) {
     vertical-align: middle; /* テキストの真ん中に来るように調整 */
     margin-right: 10px;
 }
+/* --- 自己紹介ページ (about.html) 専用スタイル --- */
+
+/* プロフィールエリア (画像とテキストの左右配置) */
+.profile-section {
+    display: flex;
+    gap: 40px;
+    align-items: center; /* 縦方向中央揃え */
+    padding-bottom: 40px;
+    border-bottom: 1px solid #333;
+}
+
+.profile-image-container {
+    flex-shrink: 0; /* 縮小させない */
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; /* 画像を丸くする */
+    object-fit: cover;
+    border: 4px solid #7289da; /* Discordカラーのフレーム */
+}
+
+.profile-text h2 {
+    font-size: 2.2em;
+    margin-bottom: 15px;
+}
+
+.profile-text .bio {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+
+.contact-mini {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.button-small {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+/* --- 実績/統計エリア (IMG_8340.jpegを再現) --- */
+.stats-section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.stats-section h3 {
+    font-size: 1.8em;
+    margin-bottom: 40px;
+    color: #f4f4f4; /* 白文字 */
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    flex-basis: 25%; /* 4分割 */
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 3em;
+    font-weight: bold;
+    color: #4ac996; /* 添付画像と同じ緑色 */
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 1em;
+    color: #ccc;
+}
+
+
+/* --- スキルとサービス紹介エリア --- */
+.services-section {
+    padding: 40px 0 60px;
+}
+
+.skills-list {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.skills-list h4 {
+    border-bottom: 1px dashed #555;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.skills-list ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 30px;
+}
+
+.skills-list ul li {
+    background-color: #2a2a2a;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* --- サービス紹介カード (IMG_8338.jpgを再現) --- */
+.bot-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.bot-card {
+    background-color: #1a1a2e; /* 添付画像に近い濃い背景 */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px; /* カードの最大幅 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.bot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.bot-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff; /* アイコン背景 */
+    border: 2px solid #5a5a7a;
+}
+
+.bot-tag {
+    background-color: #333;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.bot-card h4 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.bot-card p {
+    font-size: 0.95em;
+    color: #ccc;
+    margin-bottom: 20px;
+    flex-grow: 1; /* ボタンを下に揃えるために重要 */
+}
+
+/* カードごとのボタンカラー調整 */
+.bot-button {
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.3s;
+    margin-top: auto;
+}
+
+.button-purple {
+    background-color: #725af7; /* 添付画像に近い紫 */
+    color: white;
+}
+.button-green {
+    background-color: #4ac970; /* 添付画像に近い緑 */
+    color: white;
+}
+.bot-button:hover {
+    opacity: 0.8;
+}
+
+/* --- レスポンシブ対応 (スマートフォン向け) --- */
+@media (max-width: 768px) {
+    .profile-section {
+        flex-direction: column; /* 画像とテキストを縦並びに */
+        text-align: center;
+    }
+    .profile-image-container {
+        margin-bottom: 20px;
+    }
+    .stats-container {
+        flex-wrap: wrap; /* 統計項目を折り返す */
+    }
+    .stat-item {
+        flex-basis: 45%; /* 2列表示 */
+        margin-bottom: 20px;
+    }
+}
