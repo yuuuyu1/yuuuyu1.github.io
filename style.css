@@ -853,22 +853,53 @@ footer {
 /* ------------------------------------------------------------------ */
 /* --- 8.レスポンシブ対応 (スマートフォン向け) --- */
 /* ------------------------------------------------------------------ */
-
 @media (max-width: 768px) {
-    header {
-        padding: 10px 4%; /* パディングを少し減らす */
+
+    /* 1. ハンバーガーボタンを表示する */
+    .menu-toggle {
+        display: block; /* 狭い画面幅で表示 */
+        position: absolute; /* ヘッダー内の右上に配置 */
+        right: 20px;
+        top: 15px;
     }
 
-    nav {
-        display: none; 
+    /* 2. ナビゲーションの表示と配置を修正 */
+    nav#main-nav {
+        display: none; /* デフォルトでは非表示 */
+        flex-direction: column;
+        position: absolute;
+        top: 61px; /* ヘッダーの下に配置 (ヘッダーの高さによる) */
+        left: 0;
+        width: 100%;
+        background-color: #1e1e1e; /* ヘッダーと同じ背景色 */
+        border-top: 1px solid #333;
+        z-index: 999;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
     
-    /* ロゴが中央に来るように調整 */
-    header .logo {
+    /* JavaScriptで 'nav-open' クラスが付いたときだけ表示 */
+    nav#main-nav.nav-open {
+        display: flex; 
+    }
+
+    nav#main-nav ul {
+        flex-direction: column;
         width: 100%;
+        padding: 10px 0;
+    }
+
+    nav#main-nav ul li {
+        margin: 0;
         text-align: center;
+        border-bottom: 1px solid #282828; /* 区切り線 */
+    }
+
+    nav#main-nav ul li a {
+        display: block;
+        padding: 15px 0;
     }
 }
+
 /*自己紹介*/
 @media (max-width: 768px) {
     .profile-section {
@@ -950,4 +981,15 @@ footer {
     .server-card, .support-bot-card {
         max-width: 90%;
     }
+}
+/* --- ハンバーガーメニューボタンの基本スタイル --- */
+.menu-toggle {
+    display: none; /* デフォルトでは非表示*/
+    background: none;
+    border: none;
+    color: #f4f4f4;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 1001; /* ヘッダーより少し手前 */
+    padding: 5px;
 }
