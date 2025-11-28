@@ -66,15 +66,16 @@ nav ul li a:hover {
 
 /* ヘッダー固定によるコンテンツの重なり解消 (すべてのメインコンテンツに適用) */
 main {
-    padding-top: 80px; /* ヘッダーの高さより少し多めに設定 (90pxだと少し過剰なため調整) */
+    /* 80pxから95pxに増やし、!importantで強制適用します */
+    padding-top: 95px !important; 
 }
 
 /* ページごとの一般的なメインコンテンツのスタイル */
-main:not(.hero-section) { /* .hero-sectionを持つmainには別のpaddingが適用されます */
+main:not(.hero-section) { 
     padding: 40px 5%;
     max-width: 1000px;
     margin: 0 auto;
-    /* padding-top: 80px; はすでに上の main { ... } で適用されています */
+    /* この padding-top の行は、上の main { ... } に統合されているため削除済みです */
 }
 
 /* ボタンの共通スタイル */
