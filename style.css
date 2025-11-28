@@ -13,15 +13,22 @@ body {
     color: #f4f4f4; /* 明るいテキスト */
 }
 
-/* ヘッダーのスタイル */
+/* --- ヘッダーのスタイル (修正) --- */
 header {
-    background-color: #1e1e1e; /* ヘッダーは少し明るい黒 */
+    background-color: #1e1e1e;
     color: #f4f4f4;
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #333; /* 濃いボーダー */
+    border-bottom: 1px solid #333;
+
+    /* 上部固定 */
+    position: fixed; /* 画面に対して位置を固定する */
+    top: 0;          /* 画面の上端に配置する */
+    left: 0;         /* 画面の左端に配置する */
+    width: 100%;     /* 幅を画面全体に広げる */
+    z-index: 1000;   /* 他の要素よりも手前に表示されるようにする */
 }
 
 .logo {
