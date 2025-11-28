@@ -225,10 +225,6 @@ main:not(.hero) {
     border-bottom: 1px solid #333;
 }
 
-.profile-image-container {
-    flex-shrink: 0; /* 縮小させない */
-}
-
 .profile-image {
     width: 200px;
     height: 200px;
