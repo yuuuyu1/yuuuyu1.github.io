@@ -9,16 +9,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     </head>
-    <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
         const menuToggle = document.querySelector('.menu-toggle');
         const mainNav = document.getElementById('main-nav');
 
-        // ボタンがクリックされたときの処理
-        menuToggle.addEventListener('click', () => {
-            // main-nav に 'nav-open' クラスを追加/削除する
-            mainNav.classList.toggle('nav-open');
-        });
+        // 要素が正しく読み込まれているかチェック
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', () => {
+                // main-nav に 'nav-open' クラスを追加/削除する
+                mainNav.classList.toggle('nav-open');
+                
+                // アイコンを三本線 (fa-bars) と バツ (fa-times) で切り替える (任意)
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            });
+        } else {
+            // console.error("ハンバーガーメニューの要素が見つかりませんでした。"); // エラー確認用
+        }
     });
 </script>
 <body>
