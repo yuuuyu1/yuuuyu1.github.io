@@ -860,28 +860,29 @@ footer {
 
     /* --- ヘッダーのメインナビゲーション制御 --- */
 
-    /* 1. PC用のナビゲーションを非表示にする（最重要） */
+@media (max-width: 768px) {
+
+    /* PC用の横並びナビゲーションを隠す (最重要) */
     nav {
-        /* nav#main-nav のIDを持つ要素に影響を与えるため、
-           このdisplay: none; は nav#main-nav の定義で上書きされます */
-        /* PC画面での flex を上書き */
-        display: none;
+        display: none; 
     }
     
-    /* 2. ハンバーガーボタンを表示する */
+    /* 1. ハンバーガーボタンを表示する */
     .menu-toggle {
         display: block; /* 狭い画面幅で表示 */
-        position: absolute; /* ヘッダー内の右上に配置を強制 */
+        position: absolute;
         right: 20px;
         top: 15px;
     }
 
-    /* 3. クリック時に表示されるドロップダウンメニューの定義 */
+    /* 2. ドロップダウンメニューの初期設定 */
     nav#main-nav {
-        display: none; /* デフォルトでは非表示 */
+        /* display: none; の定義は nav { display: none; } で上書きされるため、
+           ここでは display: none; の定義を削除/コメントアウトします。
+           JavaScriptでトグルする nav#main-nav.nav-open だけ定義を残します。 */
         flex-direction: column;
         position: absolute;
-        top: 61px; /* ヘッダーの下に配置 */
+        top: 61px;
         left: 0;
         width: 100%;
         background-color: #1e1e1e;
@@ -889,6 +890,14 @@ footer {
         z-index: 999;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
+    
+    /* JavaScriptで 'nav-open' クラスが付いたときだけ表示 */
+    nav#main-nav.nav-open {
+        display: flex !important; /* 強制的に表示 */
+    }
+
+    /* ... 以下、ul, li, a のスタイルはそのまま ... */
+}
     
     /* JavaScriptで 'nav-open' クラスが付いたときだけ表示 */
     nav#main-nav.nav-open {
