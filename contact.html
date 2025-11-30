@@ -1,18 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<title>コンタクト</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コンタクト | ゆううゆサイト</title>
+    
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> </head>
-    <header>
-        <div class="logo">ゆううゆサイト</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">ホーム</a></li>
-                <li><a href="about.html">自己紹介</a></li>
-                <li><a href="discord.html">運営中のサーバー</a></li>
-                <li><a href="contact.html" class="active">コンタクト</a></li>
-            </ul>
-        </nav>
-    </header>
+    
+</head>
+<body>
+
+<header>
+    <div class="logo">ゆううゆサイト</div>
+    
+    <button class="menu-toggle" aria-label="メニューを開く/閉じる">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <nav id="main-nav">
+        <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="about.html">自己紹介</a></li>
+            <li><a href="discord.html">運営中のサーバー</a></li>
+            <li><a href="contact.html" class="active">コンタクト</a></li>
+        </ul>
+    </nav>
+</header>
+
 <main class="contact-page">
     <h2>コンタクト</h2>
     <p class="intro-text">
@@ -32,7 +47,7 @@
         <div class="contact-card x-card">
             <h3><i class="fab fa-x-twitter contact-icon"></i>X (Twitter)</h3>
             <p>日々の活動やnoteの記事のアップデート情報など、リアルタイムな情報を発信しています。</p>
-            <a href="https://x.com/yuuuyu0000" class="card-button x-button" target=_blank">
+            <a href="https://x.com/yuuuyu0000" class="card-button x-button" target="_blank">
                 X をフォロー
             </a>
         </div>
@@ -54,3 +69,27 @@
 
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', () => {
+                // 'nav-open' クラスでメニューを開閉
+                mainNav.classList.toggle('nav-open');
+                
+                // アイコンを三本線 (fa-bars) と バツ (fa-times) で切り替える
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
