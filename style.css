@@ -394,6 +394,61 @@ main:not(.hero-section) {
         font-size: 1.2em;
     }
 }
+
+/* --- 新規追加: クイック情報バー --- */
+.quick-info-bar {
+    display: flex;
+    justify-content: center; /* 中央に配置 */
+    gap: 15px; /* 要素間のスペース */
+    margin: 30px 0 40px 0; /* 上下のマージンを調整 */
+    padding: 10px;
+    max-width: 1000px;
+    width: 90%;
+}
+
+.info-item {
+    flex: 1; /* 利用可能なスペースを均等に分割 */
+    max-width: 300px;
+    background-color: #242424; /* カードの背景色 */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    transition: transform 0.3s, background-color 0.3s;
+    text-align: center;
+}
+
+.info-item:hover {
+    transform: translateY(-5px); /* ホバーで少し持ち上げる */
+    background-color: #303030;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.info-item a {
+    text-decoration: none;
+    color: #f4f4f4; /* リンクの文字色 */
+    font-weight: bold;
+    display: block; /* リンク全体をクリック可能にする */
+    margin-top: 5px;
+}
+
+.info-item i {
+    color: #7289da; /* アイコンの色をDiscordカラーに */
+    margin-right: 8px;
+    font-size: 1em;
+}
+
+/* モバイル対応: 縦に並べる */
+@media (max-width: 768px) {
+    .quick-info-bar {
+        flex-direction: column; /* 縦並びにする */
+        gap: 10px;
+        margin: 20px 0 30px 0;
+    }
+    
+    .info-item {
+        max-width: 100%; /* 幅いっぱいに広げる */
+    }
+}
 /* ------------------------------------------------------------------ */
 /* 4. コンタクトページ専用スタイル         */
 /* ------------------------------------------------------------------ */
