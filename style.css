@@ -173,7 +173,7 @@ main:not(.hero-section) {
     justify-content: center;
     align-items: center;
     /* mainのpadding-topを上書きして、ヒーローセクションの見た目を調整 */
-    padding-top: 70px; 
+    padding-top: 45px; 
 }
 
 .hero-section h1 {
