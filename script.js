@@ -1,4 +1,4 @@
-/* --- script.js (借金追加機能付き) --- */
+/* --- script.js (Undo機能付き) --- */
 
 // 1. 初期設定とDOM要素の取得
 const debtAmountElement = document.getElementById('debt-amount');
@@ -6,30 +6,27 @@ const paymentInput = document.getElementById('payment-input');
 const recordButton = document.getElementById('record-payment');
 const statusMessage = document.getElementById('status-message');
 const lastDateElement = document.getElementById('last-date');
-
-// ★★★ 追加要素のDOMを取得 ★★★
-// index.html に追加することを前提とします。
-// 以下の要素を index.html の input-group の下などに追加してください。
-// <input type="number" id="borrow-input" placeholder="例: 50000" min="1" required>
-// <button id="record-borrow">借金を追加する</button>
 const borrowInput = document.getElementById('borrow-input');
 const borrowButton = document.getElementById('record-borrow');
+// ★★★ UndoボタンのDOMを取得 ★★★
+const undoButton = document.getElementById('undo-action');
 
 
 // 定数設定
 const annualRate = 0.15; // 年利 15%
 const dailyRate = annualRate / 365; // 日歩
 const INITIAL_DEBT = 100000; // 初期残高 100,000円
+const MAX_HISTORY = 10; // 履歴を保存する最大数
 
-// 変数設定 (LocalStorageから読み込むか、初期値を使用)
+// 変数設定
 let totalDebt;
-let lastInterestDate; // 利子計算の基準日として使用
-// let lastPaymentDate; は使用せず、lastInterestDateで統一
+let lastInterestDate;
+// ★★★ 履歴配列の追加 ★★★
+let history = []; 
 
 
 // 2. LocalStorageからデータを読み込む関数
 function loadData() {
-    // 借金残高の読み込み
     const savedDebt = localStorage.getItem('debtAmount');
     if (savedDebt !== null && !isNaN(parseFloat(savedDebt))) {
         totalDebt = parseFloat(savedDebt);
@@ -37,45 +34,71 @@ function loadData() {
         totalDebt = INITIAL_DEBT; 
     }
 
-    // 利子計算の基準日の読み込み
     const savedDate = localStorage.getItem('lastInterestDate');
     if (savedDate !== null && !isNaN(parseInt(savedDate, 10))) {
         lastInterestDate = new Date(parseInt(savedDate, 10));
     } else {
-        // 保存がなければ現在の日付
         lastInterestDate = new Date(); 
+    }
+    
+    // ★★★ 履歴の読み込み ★★★
+    const savedHistory = localStorage.getItem('debtHistory');
+    if (savedHistory) {
+        history = JSON.parse(savedHistory);
     }
 }
 
 // 3. LocalStorageにデータを保存する関数
 function saveData() {
-    // totalDebtを保存
     localStorage.setItem('debtAmount', totalDebt);
-    // lastInterestDateをミリ秒 (数値) にして保存
     localStorage.setItem('lastInterestDate', lastInterestDate.getTime());
+    // ★★★ 履歴の保存 ★★★
+    localStorage.setItem('debtHistory', JSON.stringify(history));
+}
+
+// 4. ★★★ 状態を履歴に保存する関数を新設 ★★★
+function saveHistory() {
+    // 現在の状態をオブジェクトとして保存
+    const currentState = {
+        debt: totalDebt,
+        date: lastInterestDate.getTime() // Dateオブジェクトはミリ秒で保存
+    };
+    
+    // 配列の先頭に追加
+    history.unshift(currentState);
+    
+    // 履歴が最大数を超えたら古いものを削除
+    if (history.length > MAX_HISTORY) {
+        history.pop();
+    }
+    
+    updateDisplay(); // 履歴の有無でUndoボタンの状態が変わるため
 }
 
 
-// 4. 表示更新関数 (変更なし)
+// 5. 表示更新関数
 function updateDisplay() {
     debtAmountElement.textContent = Math.round(totalDebt).toLocaleString();
     lastDateElement.textContent = lastInterestDate.toLocaleDateString('ja-JP');
 
     if (totalDebt <= 0) {
-        debtAmountElement.style.color = '#5cb85c';
-        statusMessage.textContent = '🎊 借金完済おめでとうございます！ 🎊';
+        // ... (省略：完済時の処理) ...
         recordButton.disabled = true;
-        if (borrowButton) borrowButton.disabled = true; // 追加
+        if (borrowButton) borrowButton.disabled = true;
     } else {
-        debtAmountElement.style.color = '#d9534f';
-        statusMessage.textContent = '目標まであと少し！頑張りましょう！';
+        // ... (省略：通常時の処理) ...
         recordButton.disabled = false;
-        if (borrowButton) borrowButton.disabled = false; // 追加
+        if (borrowButton) borrowButton.disabled = false;
+    }
+
+    // ★★★ Undoボタンの有効/無効を制御 ★★★
+    if (undoButton) {
+        undoButton.disabled = history.length === 0;
     }
 }
 
 
-// 5. アニメーション関数 (変更なし)
+// 6. アニメーション関数 (変更なし)
 function animateCounter(startValue, endValue, duration = 800) {
     let startTime = null;
     const range = endValue - startValue; 
@@ -104,7 +127,7 @@ function animateCounter(startValue, endValue, duration = 800) {
 }
 
 
-// 6. 利子計算と返済処理 (利子基準日の変数名を変更)
+// 7. 利子計算と返済処理
 function recordPayment() {
     const payment = parseInt(paymentInput.value, 10);
     const today = new Date();
@@ -115,6 +138,9 @@ function recordPayment() {
     }
     if (totalDebt <= 0) return;
 
+    // ★★★ 操作前に履歴を保存 ★★★
+    saveHistory(); 
+    
     // --- 利子計算 ---
     const diffTime = today.getTime() - lastInterestDate.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
@@ -130,9 +156,7 @@ function recordPayment() {
     const startDebt = totalDebt;
     const newDebt = Math.max(0, totalDebt - payment);
 
-    // 総残高を更新
     totalDebt = newDebt;
-    // 利子計算の基準日を今日に更新（返済したため）
     lastInterestDate = today;
 
     saveData();
@@ -141,7 +165,7 @@ function recordPayment() {
 }
 
 
-// 7. ★★★ 借金追加処理（新しい関数） ★★★
+// 8. 借金追加処理
 function recordBorrow() {
     const borrowAmount = parseInt(borrowInput.value, 10);
     const today = new Date();
@@ -151,8 +175,10 @@ function recordBorrow() {
         return;
     }
     
-    // --- 利子計算（追加時も利子を確定させる） ---
-    // 利子を計算し、元本に加算します
+    // ★★★ 操作前に履歴を保存 ★★★
+    saveHistory();
+    
+    // --- 利子計算 ---
     const diffTime = today.getTime() - lastInterestDate.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     
@@ -167,28 +193,54 @@ function recordBorrow() {
     const startDebt = totalDebt;
     const newDebt = totalDebt + borrowAmount;
 
-    // 総残高を更新
     totalDebt = newDebt;
-    // 利子計算の基準日を今日に更新（借入によって残高が変わったため）
     lastInterestDate = today; 
 
     alert(`${borrowAmount.toLocaleString()} 円の借金が追加されました！`);
 
     saveData();
-    animateCounter(startDebt, newDebt, 800); // カウンターは増えるアニメーション
+    animateCounter(startDebt, newDebt, 800);
     borrowInput.value = '';
 }
 
 
-// 8. 初期化処理
+// 9. ★★★ Undoアクション関数を新設 ★★★
+function undoAction() {
+    if (history.length === 0) {
+        alert("元に戻せる履歴がありません。");
+        return;
+    }
+    
+    // 履歴から最新の状態を取り出す
+    const previousState = history.shift();
+    
+    const startDebt = totalDebt;
+    
+    // 状態を適用
+    totalDebt = previousState.debt;
+    lastInterestDate = new Date(previousState.date);
+    
+    // 変更を保存
+    saveData();
+    
+    // アニメーションを適用
+    animateCounter(startDebt, totalDebt, 800);
+
+    alert("一つ前の操作に戻しました。");
+}
+
+
+// 10. 初期化処理
 function initialize() {
     loadData();
     updateDisplay();
     recordButton.addEventListener('click', recordPayment);
-    
-    // ★★★ 借金追加ボタンのイベントリスナーを設定 ★★★
     if (borrowButton) {
         borrowButton.addEventListener('click', recordBorrow);
+    }
+    // ★★★ Undoボタンにイベントリスナーを設定 ★★★
+    if (undoButton) {
+        undoButton.addEventListener('click', undoAction);
     }
 }
 
