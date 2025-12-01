@@ -1,5 +1,5 @@
 /* ================================================================== */
-/* 0. リセットと基本設定                   */
+/* 0. リセットと基本設定                   */
 /* ================================================================== */
 
 * {
@@ -9,6 +9,9 @@
 }
 
 body {
+    /* 修正: 確実に上部の空白をリセット */
+    margin-top: 0; 
+    
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
     background-color: #121212; /* 濃い黒背景 */
@@ -35,8 +38,8 @@ header {
     width: 100%;
     z-index: 1000;
     
-    /* 👇 追記: 子要素（.menu-toggle）の絶対配置の基準点にするため */
-    position: relative; 
+    /* 修正: position: fixed が設定されているため、position: relative は不要 */
+    /* position: relative; */ 
 }
 
 .logo {
@@ -44,12 +47,7 @@ header {
     font-weight: bold;
 }
 
-/* 👇 追記: nav 要素に PCでの表示を定義 👇 */
-nav {
-    display: flex; /* PC画面ではナビゲーション全体を flex で表示 */
-}
-
-/* 👇 追記: PCでのハンバーガーボタンを非表示に定義 👇 */
+/* PCでのハンバーガーボタンを非表示に定義 */
 .menu-toggle {
     display: none; /* PCでは常に非表示 */
     background: none;
@@ -61,6 +59,11 @@ nav {
     padding: 5px;
 }
 
+/* PCでのナビゲーション */
+nav {
+    display: flex; 
+}
+
 nav ul {
     list-style: none;
     display: flex;
@@ -70,57 +73,63 @@ nav ul li {
     margin-left: 20px;
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: #f4f4f4;
-    transition: color 0.3s;
-}
-
-nav ul li a:hover {
-    color: #7289da; /* Discordカラーのアクセント */
-}
-/* ... (この下に既存のアクティブリンクや下線エフェクトのCSSが続く) ... */
-/* --- ナビゲーションのスタイル (修正) --- */
+/* --- 動的な下線アニメーションのためのリンク設定 --- */
 
 nav ul li a {
     text-decoration: none;
     color: #f4f4f4;
     transition: color 0.3s;
-    /* リンクを下方向にスペースを作る */
+    
+    /* 👇 必須: 下線配置の基準点にするため */
+    position: relative; 
+    /* リンクと下線の間にスペースを作る */
     padding-bottom: 5px; 
-    position: relative; /* 疑似要素の基準点にする */
+    display: block; 
 }
 
-/* ホバー時の下線エフェクト (動きはしませんが、視覚的なフィードバックを追加) */
+/* 下線（疑似要素）の設定 */
+nav ul li a:after {
+    content: '';
+    position: absolute;
+    bottom: 0; /* リンクの下端に配置 */
+    left: 0;
+    right: 0;
+    height: 3px; /* 下線の太さ */
+    background-color: #7289da; /* 下線の色 (Discord Blue) */
+    
+    /* 速度と変化の種類を定義 */
+    transition: transform 0.4s ease-out; 
+    
+    /* 初期状態: 横幅を0にする（非表示） */
+    transform: scaleX(0); 
+    /* 中央から外に伸びるように原点を中央に設定 */
+    transform-origin: bottom center; 
+}
+
+/* ホバー時: 下線を100%の幅で表示（中央から左右に伸びる） */
 nav ul li a:hover {
     color: #7289da;
 }
+nav ul li a:hover:after {
+    transform: scaleX(1);
+}
 
-/* --- アクティブなページを示す下線--- */
-
-/* HTMLで、現在表示しているページのリンクに 'active' クラスを追加します */
+/* アクティブなリンク: 常に下線を100%の幅で表示 */
 nav ul li a.active {
-    color: #7289da; /* アクティブなリンクの色をDiscordカラーにする */
+    color: #7289da; 
+}
+nav ul li a.active:after {
+    transform: scaleX(1);
 }
 
-/* アクティブなリンクの下に下線を作成する */
-nav ul li a.active::after {
-    content: ''; /* 疑似要素には content が必須 */
-    position: absolute;
-    left: 0;
-    bottom: 0; /* リンクの真下に配置 */
-    width: 100%; /* リンクの幅全体に広げる */
-    height: 3px; /* 下線の太さ */
-    background-color: #7289da; /* 下線の色 */
-    border-radius: 1.5px; /* 角を少し丸くする */
-}
+
 /* ------------------------------------------------------------------ */
-/* 2. メインコンテンツと共通スタイル       */
+/* 2. メインコンテンツと共通スタイル       */
 /* ------------------------------------------------------------------ */
 
 /* ヘッダー固定によるコンテンツの重なり解消 (すべてのメインコンテンツに適用) */
 main {
-    /* 80pxから95pxに増やし、!importantで強制適用します */
+    /* 95pxを保持 */
     padding-top: 95px !important; 
 }
 
@@ -129,7 +138,6 @@ main:not(.hero-section) {
     padding: 40px 5%;
     max-width: 1000px;
     margin: 0 auto;
-    /* この padding-top の行は、上の main { ... } に統合されているため削除済みです */
 }
 
 /* ボタンの共通スタイル */
@@ -160,7 +168,7 @@ main:not(.hero-section) {
 }
 
 /* ------------------------------------------------------------------ */
-/* 3. ホームページ (index.html) スタイル   */
+/* 3. ホームページ (index.html) スタイル   */
 /* ------------------------------------------------------------------ */
 
 /* ヒーローセクション */
@@ -312,207 +320,74 @@ main:not(.hero-section) {
     margin-bottom: 25px;
     flex-grow: 1;
 }
-/* --- 制作物のハイライトエリア (修正) --- */
 
-/* 既存の .highlight-card はそのままにし、新しいデザインは .new-style-card で定義 */
-.highlight-card {
-    /* 既存のスタイルを維持し、new-style-cardで上書き・追加 */
-}
+/* --- 制作物のハイライトエリア (修正後の新しいスタイル) --- */
 
-.new-style-card { /* 新しいカードデザイン */
-    background-color: #1a1a1a; /* 添付画像に近い、より暗い背景色 */
-    padding: 25px; /* 少し小さめに */
-    border-radius: 8px; /* 角を少し丸める */
+.new-style-card { 
+    background-color: #1a1a1a; 
+    padding: 25px; 
+    border-radius: 8px; 
     width: 100%;
-    max-width: 320px; /* カードの最大幅を調整 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* 影を控えめに */
+    max-width: 320px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
     text-align: left;
     display: flex;
     flex-direction: column;
-    border: 1px solid #282828; /* 細い境界線を追加 */
+    border: 1px solid #282828; 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .new-style-card:hover {
-    transform: translateY(-3px); /* 少し浮き上がる */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7); /* ホバーで影を強調 */
-    border-color: #444; /* ホバーで境界線を強調 */
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7); 
+    border-color: #444; 
 }
 
 /* カード内の要素の調整 */
 .new-style-card .card-tag {
-    /* 既存のタグスタイルはそのまま */
-    font-size: 0.7em; /* タグを少し小さく */
+    font-size: 0.7em; 
     padding: 3px 7px;
     margin-bottom: 12px;
 }
 
 .new-style-card h4 {
-    font-size: 1.3em; /* タイトルを少し小さく */
+    font-size: 1.3em; 
     margin-bottom: 10px;
-    line-height: 1.4; /* 行間を調整 */
-    min-height: 60px; /* タイトルの高さが揃うように */
+    line-height: 1.4; 
+    min-height: 60px; 
 }
 
 .new-style-card p {
-    font-size: 0.9em; /* 説明文を少し小さく */
+    font-size: 0.9em; 
     margin-bottom: 20px;
     flex-grow: 1;
-    color: #b0b0b0; /* 説明文の色を少し薄く */
+    color: #b0b0b0; 
 }
 
 .new-style-card .button {
-    font-size: 0.95em; /* ボタンの文字サイズを調整 */
+    font-size: 0.95em; 
     padding: 10px 18px;
-    border-radius: 6px; /* ボタンの角丸を調整 */
+    border-radius: 6px; 
 }
 
 
 /* --- 新しいタグカラー --- */
 .card-tag.tag-gray {
-    background-color: #555; /* 落ち着いたグレー */
+    background-color: #555; 
     color: white;
 }
 
 /* --- 新しいボタンカラー --- */
 .button-note-gray {
-    background-color: #444; /* noteの新作カード用ボタン */
+    background-color: #444; 
     color: white;
 }
 .button-note-gray:hover {
     background-color: #666;
 }
 
-/* レスポンシブ対応の調整 (任意) */
-@media (max-width: 768px) {
-    .new-style-card {
-        max-width: 90%; /* スマホでカードの幅を広げる */
-    }
-}
-@media (max-width: 480px) {
-    .new-style-card h4 {
-        font-size: 1.2em;
-    }
-}
-
-/* --- 新規追加: クイック情報バー --- */
-.quick-info-bar {
-    display: flex;
-    justify-content: center; /* 中央に配置 */
-    gap: 15px; /* 要素間のスペース */
-    margin: 30px 0 40px 0; /* 上下のマージンを調整 */
-    padding: 10px;
-    max-width: 1000px;
-    width: 90%;
-}
-
-./* --- Info Item カードの修正 --- */
-.info-item {
-    position: relative; /* タグ配置の基準点 */
-    flex: 1;
-    max-width: 300px;
-    background-color: #242424;
-    padding: 15px 15px 15px 25px; /* 左パディングを増やして帯スペースを確保 */
-    border-radius: 8px;
-    border: 1px solid #333;
-    transition: transform 0.3s, background-color 0.3s;
-    text-align: center;
-    overflow: hidden; /* 帯の角を隠す */
-}
-
-.info-item:hover {
-    transform: translateY(-5px);
-    background-color: #303030;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* お知らせ感を出す左側の強調帯 */
-.info-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 8px; /* 帯の幅 */
-    background-color: #7289da; /* デフォルトの帯の色 (Discord Blue) */
-}
-
-/* 各種お知らせの帯の色をカスタマイズ */
-.note-link::before {
-    background-color: #55c500; /* Noteっぽい緑色 */
-}
-
-.discord-link::before {
-    background-color: #7289da; /* Discord Blue */
-}
-
-.twitter-link::before {
-    background-color: #1da1f2; /* X/Twitter Blue */
-}
-
-/* NEW! や更新タグのスタイル */
-.info-tag {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 0.7em;
-    font-weight: bold;
-    padding: 2px 8px;
-    border-radius: 0 8px 0 8px;
-}
-
-.new-tag {
-    background-color: #ff4d4d; /* NEWタグは赤 */
-    color: white;
-}
-
-.update-tag {
-    background-color: #ffc107; /* 更新タグは黄色 */
-    color: #121212;
-}
-
-/* モバイル対応: 縦に並べる */
-@media (max-width: 768px) {
-    .quick-info-bar {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .info-item {
-        max-width: 100%;
-        padding: 15px 15px 15px 20px; /* モバイルでは帯を細く */
-    }
-    
-    .info-item::before {
-        width: 5px; /* モバイルでは帯をさらに細く */
-    }
-}
-
-/* --- 新規追加: ゾーンタイトル --- */
-.info-zone-title {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #f4f4f4;
-    /* 左右に線を引いて目立たせる */
-    text-align: center;
-    margin: 40px 0 20px 0;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #7289da; /* Discordカラーの下線 */
-    display: inline-block;
-}
-
-/* --- クイック情報バー --- */
-.quick-info-bar {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* スペースを少し広げる */
-    margin: 0 0 40px 0; /* マージンを調整 */
-    padding: 10px;
-    max-width: 1000px;
-    width: 90%;
-}
 /* ------------------------------------------------------------------ */
-/* 4. コンタクトページ専用スタイル         */
+/* 4. コンタクトページ専用スタイル         */
 /* ------------------------------------------------------------------ */
 
 .intro-text {
@@ -559,7 +434,7 @@ main:not(.hero-section) {
 .contact-card p {
     font-size: 0.95em;
     margin-bottom: 20px;
-    flex-grow: 1; /* ボタンを下に揃える */
+    flex-grow: 1; 
 }
 
 .card-button {
@@ -576,16 +451,16 @@ main:not(.hero-section) {
 /* --- コンタクトカードのブランドカラー定義 --- */
 
 /* Discordボタン */
-.discord-button { background-color: #4CAF50; color: white; }
+.discord-button { background-color: #7289da; color: white; }
 .discord-button:hover { background-color: #5b6fb6; }
 
 /* X (Twitter) ボタン */
-.x-button { background-color: #4CAF50; color: white; }
-.x-button:hover { background-color: #5b6fb6; }
+.x-button { background-color: #000; color: white; } /* Xのブランドカラーは黒 */
+.x-button:hover { background-color: #333; }
 
 /* note ボタン */
-.note-button { background-color: #4CAF50; color: white; }
-.note-button:hover { background-color: #5b6fb6; }
+.note-button { background-color: #4ac996; color: #1e1e1e; } /* Noteのブランドカラーに近い色 */
+.note-button:hover { background-color: #38a87b; }
 
 /* --- コンタクトアイコンのカラー定義 --- */
 .contact-icon {
@@ -608,6 +483,40 @@ main:not(.hero-section) {
     margin-right: 10px;
 }
 
+/* --- 運営依頼フォーム (contact.html用) --- */
+
+.request-form-section {
+    padding: 60px 5%;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.request-form-section h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #7289da; /* Discord Blue */
+}
+
+.request-form-section p {
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.google-form-container {
+    background-color: #1e1e1e; 
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.google-form-container iframe {
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+}
+
 
 /* ------------------------------------------------------------------ */
 /* 5. 自己紹介ページ (about.html) スタイル */
@@ -622,7 +531,6 @@ main:not(.hero-section) {
     border-bottom: 1px solid #333;
 }
 
-/* 画像がない場合も対応できるように、display: noneの記述は削除しました。 */
 .profile-image-container {
     flex-shrink: 0;
 }
@@ -669,7 +577,7 @@ main:not(.hero-section) {
     gap: 20px;
     max-width: 1000px;
     margin: 0 auto;
-    flex-wrap: nowrap; /* 強制的に横並びを試みる */
+    flex-wrap: nowrap; 
 }
 
 .stat-item {
@@ -908,7 +816,7 @@ main:not(.hero-section) {
     width: 100%;
     max-width: 300px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    border-left: 5px solid #4ac996; /* サポートをイメージした緑色のアクセント */
+    border-left: 5px solid #4ac996; 
     display: flex;
     flex-direction: column;
 }
@@ -950,15 +858,8 @@ main:not(.hero-section) {
     background-color: #38a87b;
 }
 
-/* --- レスポンシブ対応 (スマートフォン向け) --- */
-@media (max-width: 600px) {
-    .server-card, .support-bot-card {
-        max-width: 90%;
-    }
-}
-
 /* ------------------------------------------------------------------ */
-/* 7. フッターとレスポンシブ               */
+/* 7. フッターとレスポンシブ               */
 /* ------------------------------------------------------------------ */
 
 footer {
@@ -970,27 +871,6 @@ footer {
     border-top: 1px solid #333;
 }
 
-/* レスポンシブ対応 (768px以下) */
-@media (max-width: 768px) {
-    .profile-section {
-        flex-direction: column;
-        text-align: center;
-    }
-    .profile-image-container {
-        margin-bottom: 20px;
-    }
-    .stats-container {
-        flex-wrap: wrap;
-    }
-    .stat-item {
-        flex-basis: 45%;
-        margin-bottom: 20px;
-    }
-}
-
-/* ------------------------------------------------------------------ */
-/* --- 8.レスポンシブ対応 (スマートフォン向け) --- */
-/* ------------------------------------------------------------------ */
 
 /* ------------------------------------------------------------------ */
 /* --- 8.レスポンシブ対応 (スマートフォン向け) --- */
@@ -999,23 +879,20 @@ footer {
 @media (max-width: 768px) {
     
     /* 1. PC用の横並びナビゲーションを強制的に隠す (最重要) */
-    /* !important で PCの nav { display: flex; } を強制的に上書き */
     nav {
         display: none !important; 
     }
     
     /* 2. ハンバーガーボタンを表示する */
     .menu-toggle {
-        display: block; /* 狭い画面幅で表示 */
+        display: block; 
         position: absolute;
         right: 20px;
         top: 15px;
     }
 
     /* 3. ドロップダウンメニューの初期設定 (nav#main-nav) */
-    /* nav { display: none !important; } が適用されているため、デフォルトは非表示 */
     nav#main-nav {
-        /* PC用の横並び設定を解除し、縦並びに変更 */
         flex-direction: column;
         position: absolute;
         top: 61px; /* ヘッダーの下から開始 */
@@ -1029,7 +906,7 @@ footer {
     
     /* 4. JavaScriptで 'nav-open' クラスが付いたときだけ表示 (クリック時) */
     nav#main-nav.nav-open {
-        display: flex !important; /* クリック時に強制的に縦並びで表示 */
+        display: flex !important; 
     }
 
     /* 5. メニューリストの縦並びスタイル */
@@ -1046,13 +923,20 @@ footer {
     nav#main-nav ul li a {
         display: block;
         padding: 15px 0;
+        
+        /* モバイルメニュー内の下線アニメーションを調整 */
+        padding-bottom: 15px; /* 下線とスペースを確保 */
     }
-}
-
-/*自己紹介*/
-@media (max-width: 768px) {
+    
+    /* モバイルメニュー内のアクティブ/ホバー下線を非表示にする (見た目をシンプルにするため) */
+    nav#main-nav ul li a:after,
+    nav#main-nav ul li a.active:after {
+        content: none; 
+    }
+    
+    /*自己紹介*/
     .profile-section {
-        flex-direction: column; /* 画像とテキストを縦並びに */
+        flex-direction: column; 
         text-align: center;
     }
     .profile-image-container {
@@ -1061,11 +945,11 @@ footer {
 
     /* 統計エリア（選ばれる理由と実績） */
     .stats-container, .stats-container-sm {
-        flex-wrap: wrap; /* 統計項目を折り返す */
+        flex-wrap: wrap; 
         justify-content: center;
     }
     .stat-item, .stat-item-sm {
-        flex-basis: 45%; /* 2列表示 */
+        flex-basis: 45%; 
         margin-bottom: 30px;
     }
     .stat-number, .stat-number-sm {
@@ -1083,10 +967,8 @@ footer {
     .skills-list ul {
         justify-content: center;
     }
-}
-/*ホーム*/
-@media (max-width: 768px) {
 
+    /*ホーム*/
     .hero-section {
         padding: 100px 5%;
     }
@@ -1099,6 +981,7 @@ footer {
     }
     .button-lg {
         width: 100%;
+    }
 
     /* 制作物ハイライトカード (新しいスタイル) */
     .highlight-cards-container {
@@ -1108,12 +991,8 @@ footer {
     .highlight-card, .new-style-card {
         max-width: 90%;
     }
-}
-/*サーバー紹介・コンタクト*/
-@media (max-width: 768px) {
-    /* ... 既存の修正 ... */
 
-    /* コンタクトカード */
+    /*サーバー紹介・コンタクト*/
     .card-container {
         flex-direction: column;
         align-items: center;
@@ -1130,3 +1009,4 @@ footer {
     .server-card, .support-bot-card {
         max-width: 90%;
     }
+}
