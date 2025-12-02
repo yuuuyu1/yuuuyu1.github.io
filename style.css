@@ -421,12 +421,12 @@ main:not(.hero-section) {
 .discord-button:hover { background-color: #5b6fb6; }
 
 /* X (Twitter) ボタン */
-.x-button { background-color: #000; color: white; } /* Xのブランドカラーは黒 */
-.x-button:hover { background-color: #333; }
+.x-button { background-color: #7289da; color: white; } /* Xのブランドカラーは黒 */
+.x-button:hover { background-color: #5b6fb6; }
 
 /* note ボタン */
-.note-button { background-color: #4ac996; color: #1e1e1e; } /* Noteのブランドカラーに近い色 */
-.note-button:hover { background-color: #38a87b; }
+.note-button { background-color: #7289da; color: white; } /* Noteのブランドカラーに近い色 */
+.note-button:hover { background-color: #5b6fb6; }
 
 /* --- コンタクトアイコンのカラー定義 --- */
 .contact-icon {
