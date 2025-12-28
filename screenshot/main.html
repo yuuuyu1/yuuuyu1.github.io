@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quick Marker (iPad Optimized)</title>
+  <style>
+    /* 元のスタイルを継承しつつ、iPad操作用に微調整 */
+    :root {
+      --bg-primary: #ffffff; --bg-secondary: #f5f5f5; --bg-toolbar: #ffffff;
+      --text-primary: #333333; --text-secondary: #666666; --border-color: #e0e0e0;
+      --accent-color: #5e89e6; --shadow: 0 2px 8px rgba(0,0,0,0.1); --canvas-bg: #f0f0f0;
+    }
+    [data-theme="dark"] {
+      --bg-primary: #1e1e1e; --bg-secondary: #2d2d2d; --bg-toolbar: #252525;
+      --text-primary: #e0e0e0; --text-secondary: #a0a0a0; --border-color: #404040;
+      --accent-color: #7aa2f7; --shadow: 0 2px 8px rgba(0,0,0,0.3); --canvas-bg: #2a2a2a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; transition: background 0.3s, color 0.3s; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 10px; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    h1 { font-size: 1.2rem; font-weight: 600; background: linear-gradient(135deg, #5e89e6, #c0a2fa, #edaefc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .theme-toggle { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 12px; cursor: pointer; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: var(--bg-toolbar); border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 12px; }
+    .tool-group { display: flex; gap: 4px; padding-right: 8px; border-right: 1px solid var(--border-color); align-items: center; }
+    .tool-group:last-child { border-right: none; }
+    .tool-group-label { font-size: 0.65rem; color: var(--text-secondary); margin-right: 2px; }
+    .tool-btn { background: var(--bg-secondary); border: 2px solid transparent; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 0.8rem; color: var(--text-primary); white-space: nowrap; }
+    .tool-btn.active { border-color: var(--accent-color); background: var(--accent-color); color: white; }
+    .tool-btn.danger:hover { background: #e53935; color: white; }
+    .color-picker { width: 32px; height: 32px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; }
+    .canvas-container { background: var(--canvas-bg); border-radius: 12px; padding: 10px; min-height: 300px; display: flex; align-items: center; justify-content: center; overflow: auto; position: relative; -webkit-overflow-scrolling: touch; }
+    #canvas { 
+        max-width: 100%; 
+        touch-action: none; /* iPadのスクロール・ピンチズーム干渉を防止 */
+    }
+    .placeholder { text-align: center; color: var(--text-secondary); padding: 40px; }
+    .bottom-bar { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .status-bar { padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 0.75rem; color: var(--text-secondary); }
+    .export-group { display: flex; gap: 8px; justify-content: flex-end; }
+    #fileInput { display: none; }
+    .toggle-switch { width: 36px; height: 20px; background: var(--border-color); border-radius: 10px; position: relative; cursor: pointer; }
+    .toggle-switch.active { background: var(--accent-color); }
+    .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle-switch.active::after { transform: translateX(16px); }
+    .num-display { font-weight: bold; width: 20px; text-align: center; }
+    footer { margin-top: 20px; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header><h1>✏️ Quick Marker Pro</h1><button class="theme-toggle" onclick="toggleTheme()">🌙</button></header>
+    <div class="toolbar">
+      <div class="tool-group">
+        <button class="tool-btn" onclick="pasteFromClipboard()">📋 貼付</button>
+        <button class="tool-btn" onclick="document.getElementById('fileInput').click()">📂 開く</button>
+        <input type="file" id="fileInput" accept="image/*" onchange="loadFromFile(event)">
+      </div>
+      <div class="tool-group">
+        <button class="tool-btn" onclick="undo()" id="undoBtn" disabled>↩️</button>
+        <button class="tool-btn" onclick="redo()" id="redoBtn" disabled>↪️</button>
+      </div>
+      <div class="tool-group">
+        <button class="tool-btn" data-tool="select" onclick="setTool('select')">🎯</button>
+        <button class="tool-btn" data-tool="arrow" onclick="setTool('arrow')">➡️</button>
+        <button class="tool-btn" data-tool="rect" onclick="setTool('rect')">⬜</button>
+        <button class="tool-btn" data-tool="blur" onclick="setTool('blur')">🌫️</button>
+        <button class="tool-btn" data-tool="number" onclick="setTool('number')">🔢</button>
+      </div>
+      <div class="tool-group" id="strokeGroup">
+        <span class="tool-group-label">太さ</span>
+        <button class="tool-btn" data-stroke="2" onclick="setStroke(2)">細</button>
+        <button class="tool-btn" data-stroke="4" onclick="setStroke(4)">中</button>
+      </div>
+      <div class="tool-group">
+        <input type="color" class="color-picker" id="colorPicker" value="#e53935">
+      </div>
+      <div class="tool-group" id="deleteGroup" style="display:none;">
+        <button class="tool-btn danger" onclick="deleteSelected()">🗑️</button>
+      </div>
+      <div class="tool-group" id="numberEditGroup" style="display:none;">
+        <button class="tool-btn" onclick="changeSelectedNumber(-1)">▼</button>
+        <span class="num-display" id="numDisplay">-</span>
+        <button class="tool-btn" onclick="changeSelectedNumber(1)">▲</button>
+      </div>
+    </div>
+
+    <div class="canvas-container">
+      <div class="placeholder" id="placeholder">
+        <p>🖼️ 画像を選択、または貼り付けてください</p>
+      </div>
+      <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="status-bar" id="statusBar">ツールを選択して描画</div>
+      <div class="export-group">
+        <button class="tool-btn" onclick="saveImage()" id="saveBtn" disabled>💾 保存</button>
+        <button class="tool-btn" onclick="copyToClipboard()" id="copyBtn" disabled>📋 コピー</button>
+      </div>
+    </div>
+    <footer>Made for Personal Use - iPad Optimized Version</footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const placeholder = document.getElementById('placeholder');
+    const statusBar = document.getElementById('statusBar');
+    const colorPicker = document.getElementById('colorPicker');
+    
+    let baseImage = null;
+    let objects = [];
+    let history = [];
+    let historyIndex = -1;
+    let selectedIndex = -1;
+    let currentTool = 'arrow';
+    let isDrawing = false, isDragging = false;
+    let startX, startY, dragOffsetX, dragOffsetY;
+    let strokeWidth = 4;
+    let markerSize = 'M';
+    const markerSizeMap = { S: 14, M: 20, L: 28 };
+    const BLUR_STRENGTH = 20;
+
+    // --- 初期化 ---
+    function setTool(tool) {
+      currentTool = tool;
+      if (tool !== 'select') selectedIndex = -1;
+      document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === tool));
+      document.getElementById('deleteGroup').style.display = tool === 'select' ? 'flex' : 'none';
+      render();
+    }
+    setTool('arrow');
+
+    function setStroke(width) {
+      strokeWidth = width;
+      document.querySelectorAll('[data-stroke]').forEach(btn => btn.classList.toggle('active', parseInt(btn.dataset.stroke) === width));
+    }
+    setStroke(4);
+
+    // --- 画像読み込み ---
+    function loadFromFile(event) {
+      const file = event.target.files[0];
+      if (file) loadImage(file);
+    }
+
+    function loadImage(blob) {
+      const img = new Image();
+      img.onload = () => {
+        baseImage = img;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        placeholder.style.display = 'none';
+        canvas.style.display = 'block';
+        objects = []; history = []; historyIndex = -1;
+        saveToHistory();
+        render();
+        updateButtons();
+      };
+      img.src = URL.createObjectURL(blob);
+    }
+
+    async function pasteFromClipboard() {
+        try {
+            const items = await navigator.clipboard.read();
+            for (const item of items) {
+                for (const type of item.types) {
+                    if (type.startsWith('image/')) {
+                        loadImage(await item.getType(type));
+                        return;
+                    }
+                }
+            }
+        } catch (e) { alert("貼り付け権限が必要です"); }
+    }
+
+    // --- 座標取得（iPad対応の肝） ---
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      let clientX, clientY;
+      
+      if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      
+      // スケール比を計算して座標を補正
+      const x = (clientX - rect.left) * (canvas.width / rect.width);
+      const y = (clientY - rect.top) * (canvas.height / rect.height);
+      return { x, y };
+    }
+
+    // --- イベントリスナー（マウス・タッチ両対応） ---
+    function handleStart(e) {
+      if (!baseImage) return;
+      // iPadのブラウザジェスチャー（スクロール等）を抑制
+      if (e.type === 'touchstart' && currentTool !== 'select') {
+          if (e.cancelable) e.preventDefault();
+      }
+
+      const { x, y } = getCanvasCoords(e);
+      startX = x; startY = y;
+
+      if (currentTool === 'select') {
+        const hit = hitTest(x, y);
+        selectedIndex = hit;
+        if (hit >= 0) {
+          isDragging = true;
+          const obj = objects[hit];
+          const bounds = getObjBounds(obj);
+          dragOffsetX = x - (obj.x || obj.x1 || 0);
+          dragOffsetY = y - (obj.y || obj.y1 || 0);
+        }
+        render();
+      } else if (currentTool === 'number') {
+        const nums = objects.filter(o => o.type === 'number').map(o => o.num);
+        const nextNum = nums.length > 0 ? Math.max(...nums) + 1 : 1;
+        objects.push({ type: 'number', x, y, num: nextNum, size: 'M', color: colorPicker.value });
+        saveToHistory(); render();
+      } else {
+        isDrawing = true;
+      }
+    }
+
+    function handleMove(e) {
+      if (!baseImage) return;
+      if (isDrawing || isDragging) {
+          if (e.cancelable) e.preventDefault();
+      }
+
+      const { x, y } = getCanvasCoords(e);
+
+      if (isDragging && selectedIndex >= 0) {
+        const obj = objects[selectedIndex];
+        if (obj.type === 'arrow') {
+          const dx = x - startX; const dy = y - startY;
+          obj.x1 += dx; obj.y1 += dy; obj.x2 += dx; obj.y2 += dy;
+          startX = x; startY = y;
+        } else {
+          obj.x = x - dragOffsetX; obj.y = y - dragOffsetY;
+        }
+        render();
+      } else if (isDrawing) {
+        render();
+        ctx.save();
+        if (currentTool === 'arrow') drawArrowObj({ x1: startX, y1: startY, x2: x, y2: y, color: colorPicker.value, stroke: strokeWidth });
+        else if (currentTool === 'rect') drawRectObj({ x: startX, y: startY, w: x - startX, h: y - startY, color: colorPicker.value, stroke: strokeWidth });
+        else if (currentTool === 'blur') {
+            ctx.setLineDash([5, 5]); ctx.strokeStyle = '#00aaff';
+            ctx.strokeRect(startX, startY, x - startX, y - startY);
+        }
+        ctx.restore();
+      }
+    }
+
+    function handleEnd(e) {
+      if (isDragging) {
+        isDragging = false;
+        saveToHistory();
+      } else if (isDrawing) {
+        isDrawing = false;
+        const { x, y } = getCanvasCoords(e.changedTouches ? e.changedTouches[0] : e);
+        if (Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5) {
+          if (currentTool === 'arrow') objects.push({ type: 'arrow', x1: startX, y1: startY, x2: x, y2: y, color: colorPicker.value, stroke: strokeWidth });
+          else if (currentTool === 'rect') objects.push({ type: 'rect', x: startX, y: startY, w: x - startX, h: y - startY, color: colorPicker.value, stroke: strokeWidth });
+          else if (currentTool === 'blur') objects.push({ type: 'blur', x: startX, y: startY, w: x - startX, h: y - startY });
+          saveToHistory();
+        }
+        render();
+      }
+    }
+
+    // マウスイベント登録
+    canvas.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    // タッチイベント登録 (iPad対応)
+    canvas.addEventListener('touchstart', handleStart, { passive: false });
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd, { passive: false });
+
+    // --- 描画エンジン ---
+    function render() {
+      if (!baseImage) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(baseImage, 0, 0);
+
+      objects.forEach((obj, i) => {
+        if (obj.type === 'blur') applyBlur(obj);
+        if (obj.type === 'arrow') drawArrowObj(obj);
+        if (obj.type === 'rect') drawRectObj(obj);
+        if (obj.type === 'number') drawNumberObj(obj);
+        if (i === selectedIndex) {
+            const b = getObjBounds(obj);
+            ctx.setLineDash([5, 5]); ctx.strokeStyle = '#00aaff'; ctx.lineWidth = 2;
+            ctx.strokeRect(b.x-4, b.y-4, b.w+8, b.h+8); ctx.setLineDash([]);
+        }
+      });
+    }
+
+    function drawArrowObj(obj) {
+      const { x1, y1, x2, y2, color, stroke } = obj;
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const headLen = 10 + stroke * 3;
+      ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = stroke;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+      ctx.fill();
+    }
+
+    function drawRectObj(obj) {
+      ctx.strokeStyle = obj.color; ctx.lineWidth = obj.stroke;
+      ctx.strokeRect(obj.x, obj.y, obj.w, obj.h);
+    }
+
+    function drawNumberObj(obj) {
+      const r = markerSizeMap[obj.size];
+      ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI*2);
+      ctx.fillStyle = obj.color; ctx.fill();
+      ctx.fillStyle = 'white'; ctx.font = `bold ${r}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(obj.num, obj.x, obj.y + 1);
+    }
+
+    function applyBlur(obj) {
+      ctx.save();
+      ctx.beginPath(); ctx.rect(obj.x, obj.y, obj.w, obj.h); ctx.clip();
+      ctx.filter = `blur(${BLUR_STRENGTH}px)`;
+      ctx.drawImage(canvas, 0, 0);
+      ctx.restore();
+    }
+
+    function hitTest(x, y) {
+      for (let i = objects.length - 1; i >= 0; i--) {
+        const b = getObjBounds(objects[i]);
+        if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) return i;
+      }
+      return -1;
+    }
+
+    function getObjBounds(obj) {
+      if (obj.type === 'arrow') return { x: Math.min(obj.x1, obj.x2), y: Math.min(obj.y1, obj.y2), w: Math.abs(obj.x2-obj.x1), h: Math.abs(obj.y2-obj.y1) };
+      if (obj.type === 'number') { const r = markerSizeMap[obj.size]; return { x: obj.x-r, y: obj.y-r, w: r*2, h: r*2 }; }
+      return { x: Math.min(obj.x, obj.x+obj.w), y: Math.min(obj.y, obj.y+obj.h), w: Math.abs(obj.w), h: Math.abs(obj.h) };
+    }
+
+    // --- 履歴・システム ---
+    function saveToHistory() {
+      history = history.slice(0, historyIndex + 1);
+      history.push(JSON.stringify(objects));
+      historyIndex++;
+      updateButtons();
+    }
+    function undo() { if (historyIndex > 0) { historyIndex--; objects = JSON.parse(history[historyIndex]); render(); updateButtons(); } }
+    function redo() { if (historyIndex < history.length - 1) { historyIndex++; objects = JSON.parse(history[historyIndex]); render(); updateButtons(); } }
+    
+    function deleteSelected() { if (selectedIndex >= 0) { objects.splice(selectedIndex, 1); selectedIndex = -1; saveToHistory(); render(); } }
+    
+    function updateButtons() {
+      document.getElementById('undoBtn').disabled = historyIndex <= 0;
+      document.getElementById('redoBtn').disabled = historyIndex >= history.length - 1;
+      document.getElementById('saveBtn').disabled = !baseImage;
+      document.getElementById('copyBtn').disabled = !baseImage;
+    }
+
+    function saveImage() {
+      const link = document.createElement('a');
+      link.download = `marker_${Date.now()}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    async function copyToClipboard() {
+        const blob = await new Promise(r => canvas.toBlob(r));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        statusBar.textContent = "📋 コピー完了！";
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>
