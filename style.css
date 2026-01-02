@@ -137,10 +137,6 @@ main:not(.hero-section) {
 /* 3. ホームページ (index.html) スタイル   */
 /* ------------------------------------------------------------------ */
 
-/* ------------------------------------------------------------------ */
-/* 3. ホームページ (index.html) スタイル   */
-/* ------------------------------------------------------------------ */
-
 /* ヒーローセクション */
 .hero-section {
     text-align: center;
@@ -281,6 +277,77 @@ main:not(.hero-section) {
     .button {
         width: 100%;
     }
+}
+/* ヒーローセクション内のコンテンツ整列 */
+.hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* タイトル上の小さなタグ */
+.hero-tag {
+    display: inline-block;
+    color: #7289da;
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 5px 15px;
+    border: 1px solid rgba(114, 137, 218, 0.3);
+    border-radius: 4px;
+    background: rgba(114, 137, 218, 0.1);
+}
+
+/* 改行の調整（スマホで不自然にならないように） */
+@media (max-width: 768px) {
+    .hero-section h1 br { display: none; }
+}
+
+/* スクロールを促すインジケーター */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.6;
+}
+
+.scroll-indicator span {
+    font-size: 0.7em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.mouse {
+    width: 20px;
+    height: 35px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    position: relative;
+}
+
+.mouse::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scroll-ani 2s infinite;
+}
+
+@keyframes scroll-ani {
+    0% { opacity: 1; top: 8px; }
+    100% { opacity: 0; top: 20px; }
 }
 
 /* 実績/統計のハイライトエリア */
