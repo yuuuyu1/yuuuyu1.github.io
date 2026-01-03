@@ -514,6 +514,108 @@ main:not(.hero-section) {
     border-radius: 6px;
 }
 
+/* --- 専門スキルセクション --- */
+.expertise-section {
+    padding: 100px 5%;
+    background-color: #121212;
+}
+
+.section-title-center {
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.section-subtitle-center {
+    text-align: center;
+    color: #666;
+    margin-bottom: 60px;
+    font-size: 0.9em;
+}
+
+.expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.expertise-card {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    transition: 0.3s;
+}
+
+.expertise-card:hover {
+    border-color: #7289da;
+    transform: translateY(-5px);
+}
+
+.expertise-card i {
+    font-size: 2.5em;
+    color: #7289da;
+    margin-bottom: 20px;
+}
+
+.expertise-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.expertise-card p {
+    color: #888;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+/* --- 実績数値セクション --- */
+.achievements-section {
+    padding: 80px 5%;
+    background-color: #0f0f0f; /* 少し色を変えて区切りを出す */
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+}
+
+.achievements-grid {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.achieve-item {
+    text-align: center;
+}
+
+.achieve-num {
+    display: block;
+    font-size: 3.5em;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 10px;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.achieve-label {
+    color: #7289da;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+    .achieve-num { font-size: 2.5em; }
+}
 
 /* ------------------------------------------------------------------ */
 /* 5. 自己紹介ページ (about.html) スタイル */
