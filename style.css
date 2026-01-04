@@ -916,6 +916,52 @@ main:not(.hero-section) {
     }
 }
 
+/* --- 導入文のデザイン刷新 --- */
+.contact-intro {
+    padding: 60px 5% 20px;
+}
+.intro-box {
+    background: linear-gradient(145deg, #1e1e1e, #141414);
+    border: 1px solid #333;
+    padding: 50px 30px;
+    border-radius: 20px;
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.intro-box h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+.intro-box p {
+    color: #bbb;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* --- noteカード専用の色 --- */
+.note-card h3 .contact-icon {
+    color: #2cb696; /* noteカラー */
+}
+.note-button {
+    background-color: #2cb696;
+    color: white;
+}
+.note-button:hover {
+    background-color: #23947a;
+}
+
+/* カード全体の微調整（3枚並ぶように） */
+.contact-card {
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+}
+
 /* ------------------------------------------------------------------ */
 /* 5. 自己紹介ページ (about.html) スタイル */
 /* ------------------------------------------------------------------ */
