@@ -552,14 +552,6 @@ main:not(.hero-section) {
     color: #eee;
 }
 
-/* --- News & Blog の強調 --- */
-.blog-column.highlight {
-    background: rgba(114, 137, 218, 0.05);
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid rgba(114, 137, 218, 0.2);
-}
-
 /* --- 実績 & お客様の声 --- */
 .trust-section {
     padding: 80px 5%;
