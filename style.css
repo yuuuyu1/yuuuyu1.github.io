@@ -1,4 +1,6 @@
-/* ===基本設定=== */
+/* ================================================================== */
+/* 1. 基本設定 & 共通レイアウト
+/* ================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -6,68 +8,66 @@
 }
 
 body {
-    margin-top: 0; 
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     line-height: 1.6;
     background-color: #121212;
     color: #f4f4f4;
+    overflow-x: hidden;
 }
 
-/* ===ヘッダーとナビゲーション===  */
+/* コンテンツの土台 */
+main {
+    padding-top: 80px; /* ヘッダーの高さ分 */
+    min-height: 100vh;
+    width: 100%;
+}
+
+section {
+    padding: 80px 5%;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ================================================================== */
+/* 2. ヘッダーとナビゲーション
+/* ================================================================== */
 header {
-    background-color: #1e1e1e;
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
     color: #f4f4f4;
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #333;
-    /* 上部固定 */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; 
+    z-index: 1000;
 }
 
 .logo {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bold;
-}
-
-/* PCでのハンバーガーボタンを非表示に */
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #f4f4f4; 
-    font-size: 1.5em;
-    cursor: pointer;
-    z-index: 1001; 
-    padding: 5px;
-}
-
-nav {
-    display: flex; 
+    letter-spacing: 1px;
 }
 
 nav ul {
     list-style: none;
     display: flex;
+    gap: 25px;
 }
 
-nav ul li {
-    margin-left: 20px;
-}
-
-/* --- 動的な下線アニメーション設定 --- */
 nav ul li a {
     text-decoration: none;
     color: #f4f4f4;
+    font-size: 0.95rem;
+    font-weight: 500;
     transition: color 0.3s;
-    position: relative; 
-    padding-bottom: 5px; 
-    display: block; 
+    position: relative;
+    padding-bottom: 5px;
 }
 
 nav ul li a:after {
@@ -75,183 +75,148 @@ nav ul li a:after {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
-    height: 3px;
+    width: 100%;
+    height: 2px;
     background-color: #7289da;
-    transition: transform 0.4s ease-out; 
-    transform: scaleX(0); 
-    transform-origin: bottom center; 
+    transform: scaleX(0);
+    transition: transform 0.3s;
 }
 
-nav ul li a:hover {
+nav ul li a:hover, nav ul li a.active {
     color: #7289da;
 }
-nav ul li a:hover:after {
+
+nav ul li a:hover:after, nav ul li a.active:after {
     transform: scaleX(1);
 }
 
-nav ul li a.active {
-    color: #7289da; 
-}
-nav ul li a.active:after {
-    transform: scaleX(1);
-}
-
-/* ===メインコンテンツと共通スタイル=== */
-main {
-    padding-top: 95px !important; 
+/* ハンバーガーメニュー (スマホ用) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #f4f4f4;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
-main:not(.hero-section) { 
-    padding: 40px 5%;
-    max-width: 1000px;
-    margin: 0 auto;
-}
+/* ================================================================== */
+/* 3. コンタクトページ専用スタイル (Steps & Q&A)
+/* ================================================================== */
 
-.button {
-    display: inline-block;
-    background-color: #7289da;
-    color: white;
-    padding: 10px 25px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.button:hover {
-    background-color: #5b6fb6;
-}
-
-.button-small {
-    padding: 8px 15px;
-    font-size: 0.9em;
-}
-
-.button-lg {
-    padding: 15px 30px;
-    font-size: 1.1em;
-}
-
-/* === CTAセクションの刷新デザイン === */
-.cta-section {
-    padding: 100px 5% 150px; /* 下に余裕を持たせる */
-    display: flex;
-    justify-content: center;
-}
-
-.cta-card {
-    background: linear-gradient(145deg, #1e1e1e, #121212);
-    border: 1px solid #333;
-    border-radius: 24px;
-    padding: 60px 40px;
-    max-width: 900px;
-    width: 100%;
+/* 導入文 */
+.contact-intro {
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    padding-top: 60px;
 }
 
-/* 背景に薄い光の演出 */
-.cta-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(114, 137, 218, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.cta-card h2 {
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
+.contact-intro h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
     font-weight: 900;
     margin-bottom: 20px;
-    background: linear-gradient(to right, #fff, #7289da);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
-.cta-card p {
-    font-size: 1.1rem;
+.intro-text {
+    max-width: 700px;
+    margin: 0 auto;
     color: #aaa;
-    margin-bottom: 40px;
-    line-height: 1.8;
 }
 
-.cta-actions {
-    display: flex;
+/* ステップ表示 (Steps) */
+.workflow-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
-    justify-content: center;
-    align-items: center;
+    margin: 40px 0;
 }
 
-/* Discord ID コピーボタンのデザイン */
-.copy-id-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid #444;
-    color: #fff;
-    padding: 15px 25px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    position: relative;
+.workflow-step {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    transition: 0.3s;
+    text-align: left;
 }
 
-.copy-id-btn:hover {
-    background: rgba(114, 137, 218, 0.1);
+.workflow-step:hover {
+    transform: translateY(-5px);
     border-color: #7289da;
-    transform: translateY(-2px);
+    background: rgba(114, 137, 218, 0.05);
 }
 
-.copy-id-btn i {
+.step-num {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 900;
     color: #7289da;
-    font-size: 1.2rem;
+    margin-bottom: 10px;
+    opacity: 0.6;
 }
 
-/* ツールチップの改善 */
-.tooltip {
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #7289da;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    opacity: 0;
-    visibility: hidden;
+/* コンタクトカード */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: 50px 0;
+}
+
+.contact-card {
+    background: #1e1e1e;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    flex: 1;
+    min-width: 300px;
+    max-width: 450px;
+    text-align: center;
+}
+
+.card-button {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
     transition: 0.3s;
 }
 
-.tooltip.show {
-    opacity: 1;
-    visibility: visible;
-    bottom: 130%;
+.discord-button { background-color: #7289da; color: white; border: none; cursor: pointer; font-size: 1rem;}
+.x-button { background-color: #fff; color: #000; }
+
+/* Q&Aセクション */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
 }
 
-/* スマホ対応の微調整 */
-@media (max-width: 768px) {
-    .cta-card {
-        padding: 40px 20px;
-    }
-    .cta-actions {
-        flex-direction: column;
-    }
-    .copy-id-btn {
-        width: 100%;
-        justify-content: center;
-    }
+.faq-item {
+    border-bottom: 1px solid #333;
+    padding: 25px 0;
 }
 
-/* スクロールアニメーション用の設定 */
+.faq-question {
+    color: #7289da;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.faq-answer {
+    color: #ccc;
+    line-height: 1.8;
+}
+
+/* ================================================================== */
+/* 4. アニメーション & その他
+/* ================================================================== */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -263,1284 +228,40 @@ main:not(.hero-section) {
     transform: translateY(0);
 }
 
-/* ================================================================== */
-/* 3. ホームページ (index.html) スタイル 
-/* ================================================================== */
-
-/* --- 3-1. ヒーローセクション (Pattern A) --- */
-.hero-section {
-    text-align: center;
-    min-height: 95vh; /* ボタンとスクロールの重なりを防ぐため高さを確保 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: 0 5%;
-    background-color: #121212; /* ソリッドな黒 */
-    overflow: hidden;
-}
-
-/* 背景のドット質感 */
-.hero-pattern {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: 0;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin-bottom: 80px; /* スクロールインジケーターとの余白 */
-}
-
-.hero-tag {
-    display: inline-block;
-    color: #7289da;
-    font-size: 0.85em;
-    font-weight: 800;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    padding: 6px 16px;
-    border: 1px solid rgba(114, 137, 218, 0.4);
-    background: rgba(114, 137, 218, 0.05);
-    border-radius: 2px;
-}
-
-.hero-section h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    margin-bottom: 30px;
-}
-
-.hero-section p {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: #aaa;
-    line-height: 1.8;
-    margin-bottom: 40px;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-/* スクロールアニメーション (ボタンに被らないよう配置) */
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 1;
-}
-
-.scroll-indicator span {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 8px;
-}
-
-.mouse {
-    width: 20px;
-    height: 32px;
-    border: 2px solid #333;
-    border-radius: 12px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.mouse::before {
-    content: '';
-    width: 2px;
-    height: 6px;
-    background-color: #7289da;
-    border-radius: 1px;
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scroll-ani 2s infinite;
-}
-
-@keyframes scroll-ani {
-    0% { opacity: 0; transform: translate(-50%, 0); }
-    20% { opacity: 1; }
-    80% { opacity: 0; transform: translate(-50%, 15px); }
-    100% { opacity: 0; }
-}
-
-/* --- 3-2. News & Blog セクション (画像再現) --- */
-.news-blog-wrapper {
-    padding: 100px 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.news-blog-container {
-    display: flex;
-    gap: 60px;
-}
-
-.news-column, .blog-column {
-    flex: 1;
-}
-
-.column-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #333;
-    padding-bottom: 15px;
-    margin-bottom: 10px;
-}
-
-.main-title {
-    font-size: 2.2em;
-    font-weight: bold;
-    font-family: 'Helvetica', 'Arial Black', sans-serif;
-}
-
-.sub-title {
-    font-size: 0.9em;
-    color: #888;
-    margin-left: 15px;
-}
-
-/* ピンクのMoreボタン */
-.more-btn {
-    background-color: #ff5e7e;
-    color: white;
-    text-decoration: none;
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: 4px 15px 4px 35px;
-    border-radius: 50px;
-    position: relative;
-    transition: 0.3s;
-}
-
-.more-btn::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-/* リストアイテム共通 */
-.list-item, .blog-item {
-    padding: 25px 0;
-    border-bottom: 1px solid #333;
-}
-
-.item-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.date-text {
-    font-family: monospace;
-    font-weight: bold;
-    color: #eee;
-}
-
-/* タグ */
-.tag {
-    font-size: 0.7em;
-    font-weight: bold;
-    padding: 2px 12px;
-    border-radius: 50px;
-    color: #121212;
-}
-.tag-yellow { background-color: #ffcc00; }
-.tag-pink    { background-color: #ff85a1; }
-.tag-blue    { background-color: #7289da; color: white; }
-.tag-gray    { background-color: #555; color: white; }
-
-.item-link {
-    color: #f4f4f4;
-    text-decoration: none;
-    font-size: 0.95em;
-    transition: 0.2s;
-}
-
-.item-link:hover { color: #7289da; }
-
-/* Blog独自の縦日付レイアウト */
-.blog-item {
-    display: flex;
-    gap: 25px;
-}
-
-.vertical-date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-right: 1px solid #333;
-    padding-right: 20px;
-    min-width: 80px;
-}
-
-.v-year { font-size: 0.7em; color: #666; }
-.v-day  { font-size: 1.4em; font-weight: bold; color: #fff; line-height: 1; margin: 4px 0; }
-.v-week { font-size: 0.7em; color: #666; font-weight: bold; }
-
-.blog-content { flex: 1; }
-
-/* スマホ対応 */
-@media (max-width: 900px) {
-    .news-blog-container { flex-direction: column; gap: 50px; }
-    .hero-actions { flex-direction: column; width: 100%; }
-    .button { width: 100%; text-align: center; }
-}
-
-/* --- 悩み解決セクション --- */
-.problem-section {
-    padding: 60px 5%;
-    background-color: #1a1a1a;
-    text-align: center;
-}
-
-.section-title-small {
-    font-size: 1.5rem;
-    color: #7289da;
-    margin-bottom: 30px;
-}
-
-.problem-grid {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-}
-
-.problem-item {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    border: 1px solid #333;
-}
-
-.problem-item span {
-    color: #7289da;
-    margin-right: 10px;
-}
-
-.problem-lead {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #eee;
-}
-
-/* --- 実績 & お客様の声 --- */
-.trust-section {
-    padding: 80px 5%;
-    background-color: #0f0f0f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-}
-
-.voice-container {
-    max-width: 700px;
-    width: 100%;
-}
-
-.voice-card {
-    background: #1e1e1e;
-    padding: 30px;
-    border-radius: 20px;
-    position: relative;
-    border-left: 5px solid #7289da;
-}
-
-.voice-card p {
-    font-style: italic;
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.8;
-    margin-bottom: 15px;
-}
-
-.voice-author {
-    display: block;
-    text-align: right;
-    font-size: 0.85rem;
-    color: #7289da;
-    font-weight: bold;
-}
-
-/* モバイル対応 */
-@media (max-width: 768px) {
-    .problem-grid {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .problem-item {
-        width: 100%;
-    }
-    .news-blog-container {
-        flex-direction: column;
-    }
-}
-
-/* ------------------------------------------------------------------ */
-/* 4. コンタクトページ専用スタイル         */
-/* ------------------------------------------------------------------ */
-
-.intro-text {
-    text-align: center;
-    margin-bottom: 70px;
-    font-size: 1.1em;
-}
-
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px 0;
-}
-
-.contact-card {
-    background-color: #1e1e1e;
-    color: #f4f4f4;
-    padding: 30px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 300px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-    border: 1px solid #333;
-    transition: transform 0.3s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.contact-card:hover {
-    transform: translateY(-5px);
-    border-color: #7289da;
-}
-
-.contact-card h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #333;
-    padding-bottom: 5px;
-}
-
-.contact-card p {
-    font-size: 0.95em;
-    margin-bottom: 20px;
-    flex-grow: 1; 
-}
-
-.card-button {
-    display: block;
-    text-align: center;
-    padding: 12px 15px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    margin-top: auto;
-}
-
-/* --- 見出しの表現を優しく --- */
-.section-subtitle-center {
-    font-size: 0.9rem;
-    color: #888;
-    margin-top: -15px;
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-/* --- Steps (Workflowの書き換え) --- */
-.workflow-step {
-    background: rgba(255, 255, 255, 0.03); /* 少し透けさせて柔らかく */
-    padding: 30px;
-    border-radius: 20px; /* 角をさらに丸く */
-    border-top: none;
-    border: 1px solid #333;
-    transition: transform 0.3s ease;
-}
-
-.workflow-step:hover {
-    transform: translateY(-5px);
-    border-color: #7289da;
-}
-
-.step-num {
-    color: #7289da;
-    opacity: 0.5;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* --- Q&A (FAQの書き換え) --- */
-.faq-item {
-    background: none; /* 背景を抜いてシンプルに */
-    border: none;
-    border-bottom: 1px solid #333;
-    margin-bottom: 0;
-    border-radius: 0;
-}
-
-.faq-question {
-    background: none;
-    padding: 25px 10px 10px;
-    font-size: 1.1rem;
-    color: #7289da;
-}
-
-.faq-answer {
-    padding: 0 10px 25px;
-    color: #bbb;
-}
-
-/* --- コンタクトカードのブランドカラー定義 --- */
-
-/* Discordボタン */
-.discord-button { background-color: #7289da; color: white; }
-.discord-button:hover { background-color: #5b6fb6; }
-
-/* X (Twitter) ボタン */
-.x-button { background-color: #7289da; color: white; } /* Xのブランドカラーは黒 */
-.x-button:hover { background-color: #5b6fb6; }
-
-/* note ボタン */
-.note-button { background-color: #7289da; color: white; } /* Noteのブランドカラーに近い色 */
-.note-button:hover { background-color: #5b6fb6; }
-
-/* --- コンタクトアイコンのカラー定義 --- */
-.contact-icon {
-    margin-right: 10px;
-    font-size: 1.2em;
-}
-
-.discord-card h3 .contact-icon {
-    color: #7289da; /* Discordカラー */
-}
-
-.x-card h3 .contact-icon {
-    color: #FFF; /* X（Twitter）は白 */
-}
-
-.custom-logo, .contact-svg-icon {
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-/* --- 運営依頼フォーム (contact.html用) --- */
-
-.request-form-section {
-    padding: 60px 5%;
-    text-align: center;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.request-form-section h3 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: #7289da; /* Discord Blue */
-}
-
-.request-form-section p {
-    margin-bottom: 30px;
-    font-size: 1.1em;
-}
-
-.google-form-container {
-    background-color: #1e1e1e; 
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.google-form-container iframe {
-    display: block;
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-}
-
-/* --- 専門スキルセクション --- */
-.expertise-section {
-    padding: 100px 5%;
-    background-color: #121212;
-}
-
+/* 見出し共通 */
 .section-title-center {
     text-align: center;
-    font-size: 2.5em;
-    font-weight: 900;
-    letter-spacing: 2px;
+    font-size: 2.2rem;
     margin-bottom: 10px;
 }
 
 .section-subtitle-center {
     text-align: center;
-    color: #666;
-    margin-bottom: 60px;
-    font-size: 0.9em;
-}
-
-.expertise-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.expertise-card {
-    background-color: #1a1a1a;
-    padding: 40px;
-    border-radius: 8px;
-    border: 1px solid #222;
-    transition: 0.3s;
-}
-
-.expertise-card:hover {
-    border-color: #7289da;
-    transform: translateY(-5px);
-}
-
-.expertise-card i {
-    font-size: 2.5em;
-    color: #7289da;
-    margin-bottom: 20px;
-}
-
-.expertise-card h3 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #fff;
-}
-
-.expertise-card p {
-    color: #888;
-    line-height: 1.6;
-    font-size: 0.95em;
-}
-
-/* --- 実績数値セクション --- */
-.achievements-section {
-    padding: 80px 5%;
-    background-color: #0f0f0f; /* 少し色を変えて区切りを出す */
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #222;
-}
-
-.achievements-grid {
-    display: flex;
-    justify-content: space-around;
-    max-width: 1000px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.achieve-item {
-    text-align: center;
-}
-
-.achieve-num {
-    display: block;
-    font-size: 3.5em;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1;
-    margin-bottom: 10px;
-    font-family: 'Arial Black', sans-serif;
-}
-
-.achieve-label {
-    color: #7289da;
-    font-weight: bold;
-    font-size: 0.8em;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-@media (max-width: 768px) {
-    .achieve-num { font-size: 2.5em; }
-}
-
-/* ------------------------------------------------------------------ */
-/* 5. 自己紹介ページ (about.html) スタイル */
-/* ------------------------------------------------------------------ */
-
-/* プロフィールエリア (画像とテキストの左右配置) */
-.profile-section {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #333;
-}
-
-.profile-image-container {
-    flex-shrink: 0;
-}
-
-.profile-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #7289da;
-}
-
-.profile-text h2 {
-    font-size: 2.2em;
-    margin-bottom: 15px;
-}
-
-.profile-text .bio {
-    font-size: 1.1em;
-    margin-bottom: 25px;
-}
-
-.contact-mini {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* 実績/統計エリア */
-.stats-section {
-    padding: 60px 0;
-    text-align: center;
-}
-
-.stats-section h3 {
-    font-size: 1.8em;
-    margin-bottom: 40px;
-    color: #f4f4f4;
-}
-
-.stats-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    flex-wrap: nowrap; 
-}
-
-.stat-item {
-    flex-basis: 25%;
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 3em;
-    font-weight: bold;
-    color: #4ac996;
-    margin-bottom: 5px;
-}
-
-.stat-label {
-    font-size: 1em;
-    color: #ccc;
-}
-
-
-/* スキルとサービス紹介エリア */
-.services-section {
-    padding: 40px 0 60px;
-}
-
-.skills-list {
-    max-width: 800px;
-    margin: 0 auto 50px;
-    padding: 20px;
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    border: 1px solid #333;
-}
-
-.skills-list h4 {
-    border-bottom: 1px dashed #555;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-    font-size: 1.3em;
-}
-
-.skills-list ul {
-    list-style-type: none;
-    padding-left: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px 30px;
-}
-
-.skills-list ul li {
-    background-color: #2a2a2a;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-
-/* サービス紹介カード */
-.bot-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding-top: 20px;
-}
-
-.bot-card {
-    background-color: #1a1a2e;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-}
-
-.bot-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.bot-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #fff;
-    border: 2px solid #5a5a7a;
-}
-
-.bot-tag {
-    background-color: #333;
-    color: #fff;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.8em;
-}
-
-.bot-card h4 {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-.bot-card p {
-    font-size: 0.95em;
-    color: #ccc;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
-.bot-button {
-    text-align: center;
-    padding: 10px 15px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: opacity 0.3s;
-    margin-top: auto;
-}
-
-.button-purple {
-    background-color: #725af7;
-    color: white;
-}
-.button-green {
-    background-color: #4ac970;
-    color: white;
-}
-.button-pink {
-    background-color: #8c5af7;
-    color: white;
-}
-.bot-button:hover {
-    opacity: 0.8;
-}
-
-/* ------------------------------------------------------------------ */
-/* --- 運営中のサーバー(discord.html) 専用スタイル --- */
-/* ------------------------------------------------------------------ */
-
-.discord-intro-section {
-    text-align: center;
+    color: #777;
     margin-bottom: 50px;
 }
 
-.discord-intro-section h2 {
-    font-size: 2.5em;
-    margin-bottom: 15px;
-}
-
-.discord-intro-section p {
-    font-size: 1.1em;
-    color: #ccc;
-}
-
-/* --- サーバーカードのスタイル --- */
-.server-list-section {
-    padding-bottom: 50px;
-    border-bottom: 1px solid #333;
-    margin-bottom: 50px;
-}
-
-.server-list-section h3, .bot-support-section h3 {
-    text-align: center;
-    font-size: 1.8em;
-    margin-bottom: 30px;
-}
-
-.server-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-}
-
-.server-card {
-    background-color: #1e1e1e;
-    padding: 25px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.server-icon-area {
-    margin-bottom: 15px;
-}
-
-.server-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #7289da;
-}
-
-.server-card h4 {
-    font-size: 1.6em;
-    margin-bottom: 10px;
-}
-
-.server-card p {
-    color: #ccc;
-    font-size: 0.95em;
-    margin-bottom: 25px;
-    flex-grow: 1;
-}
-
-/* Discordブルーボタンの定義 */
-.button-discord-blue {
-    background-color: #7289da;
-    color: white;
-}
-.button-discord-blue:hover {
-    background-color: #5b6fb6;
-}
-
-/* --- サポーター Bot カードのスタイル --- */
-.support-bot-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.support-bot-card {
-    background-color: #1a1a2e;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 300px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    border-left: 5px solid #4ac996; 
-    display: flex;
-    flex-direction: column;
-}
-
-.bot-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.bot-support-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-right: 15px;
-    border: 2px solid #5a5a7a;
-}
-
-.support-bot-card h4 {
-    font-size: 1.3em;
-    color: #f4f4f4;
-}
-
-.support-bot-card p {
-    font-size: 0.9em;
-    color: #b0b0b0;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
-/* サポーター Bot 用のセカンダリボタン (緑色) */
-.button-secondary-green {
-    background-color: #4ac996;
-    color: #1a1a2e;
-    font-weight: bold;
-    text-align: center;
-}
-.button-secondary-green:hover {
-    background-color: #38a87b;
-}
-
-/* ------------------------------------------------------------------ */
-/* 7. フッターとレスポンシブ               */
-/* ------------------------------------------------------------------ */
-
-footer {
-    text-align: center;
-    padding: 15px 0;
-    background-color: #1e1e1e;
-    color: #ccc;
-    font-size: 0.9em;
-    border-top: 1px solid #333;
-}
-
-
-/* ------------------------------------------------------------------ */
-/* --- 8.レスポンシブ対応 (スマートフォン向け) --- */
-/* ------------------------------------------------------------------ */
-
+/* ================================================================== */
+/* 5. レスポンシブ (スマホ対応)
+/* ================================================================== */
 @media (max-width: 768px) {
+    .menu-toggle { display: block; }
     
-    /* 1. PC用の横並びナビゲーションを強制的に隠す (最重要) */
-    nav {
-        display: none !important; 
-    }
-    
-    /* 2. ハンバーガーボタンを表示する */
-    .menu-toggle {
-        display: block; 
-        position: absolute;
-        right: 20px;
-        top: 15px;
-    }
-
-    /* 3. ドロップダウンメニューの初期設定 (nav#main-nav) */
     nav#main-nav {
-        flex-direction: column;
+        display: none;
         position: absolute;
-        top: 61px; /* ヘッダーの下から開始 */
+        top: 60px;
         left: 0;
         width: 100%;
-        background-color: #1e1e1e;
-        border-top: 1px solid #333;
-        z-index: 999;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        background: #1e1e1e;
+        flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #333;
     }
+
+    nav#main-nav.nav-open { display: flex; }
+    nav ul { flex-direction: column; align-items: center; gap: 15px; }
     
-    /* 4. JavaScriptで 'nav-open' クラスが付いたときだけ表示 (クリック時) */
-    nav#main-nav.nav-open {
-        display: flex !important; 
-    }
-
-    /* 5. メニューリストの縦並びスタイル */
-    nav#main-nav ul {
-        flex-direction: column;
-        width: 100%;
-        padding: 10px 0;
-    }
-    nav#main-nav ul li {
-        margin: 0;
-        text-align: center;
-        border-bottom: 1px solid #282828;
-    }
-    nav#main-nav ul li a {
-        display: block;
-        padding: 15px 0;
-        
-        /* モバイルメニュー内の下線アニメーションを調整 */
-        padding-bottom: 15px; /* 下線とスペースを確保 */
-    }
-    
-    /* モバイルメニュー内のアクティブ/ホバー下線を非表示にする (見た目をシンプルにするため) */
-    nav#main-nav ul li a:after,
-    nav#main-nav ul li a.active:after {
-        content: none; 
-    }
-    
-    /*自己紹介*/
-    .profile-section {
-        flex-direction: column; 
-        text-align: center;
-    }
-    .profile-image-container {
-        margin-bottom: 20px;
-    }
-
-    /* 統計エリア（選ばれる理由と実績） */
-    .stats-container, .stats-container-sm {
-        flex-wrap: wrap; 
-        justify-content: center;
-    }
-    .stat-item, .stat-item-sm {
-        flex-basis: 45%; 
-        margin-bottom: 30px;
-    }
-    .stat-number, .stat-number-sm {
-        font-size: 2.5em;
-    }
-    
-    .bot-cards-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .bot-card {
-        max-width: 90%;
-    }
-    
-    .skills-list ul {
-        justify-content: center;
-    }
-
-    /*ホーム*/
-    .hero-section {
-        padding: 100px 5%;
-    }
-    .hero-section h1 {
-        font-size: 2.5em;
-    }
-    .hero-actions {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .button-lg {
-        width: 100%;
-    }
-
-    /* 制作物ハイライトカード (新しいスタイル) */
-    .highlight-cards-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .highlight-card, .new-style-card {
-        max-width: 90%;
-    }
-
-    /*サーバー紹介・コンタクト*/
-    .card-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .contact-card {
-        max-width: 90%;
-    }
-
-    /* Discordサーバー紹介ページ */
-    .server-cards-container, .support-bot-cards-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .server-card, .support-bot-card {
-        max-width: 90%;
-    }
-}
-
-/* ------------------------------------------------------------------ */
-/* News & Blog コンテナ全体のレイアウト */
-/* ------------------------------------------------------------------ */
-.news-blog-wrapper {
-    padding: 60px 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.news-blog-container {
-    display: flex;
-    gap: 40px; /* 左右のカラムの間隔 */
-}
-
-.news-column, .blog-column {
-    flex: 1; /* 左右均等の幅 */
-}
-
-/* ヘッダー部分 (News / Blog タイトル) */
-.column-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #333;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.header-titles {
-    display: flex;
-    align-items: baseline;
-    gap: 15px;
-}
-
-.main-title {
-    font-size: 2.2em;
-    font-weight: bold;
-    font-family: 'Helvetica', 'Arial Black', sans-serif;
-    letter-spacing: 1px;
-}
-
-.sub-title {
-    font-size: 0.9em;
-    color: #888;
-}
-
-/* 画像風 Moreボタン */
-.more-btn {
-    background-color: #ff5e7e; /* ピンク */
-    color: white;
-    text-decoration: none;
-    font-size: 0.85em;
-    font-weight: bold;
-    padding: 4px 15px 4px 35px;
-    border-radius: 50px;
-    position: relative;
-    transition: 0.3s;
-}
-
-.more-btn::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background-color: white; /* 白い丸 */
-    border-radius: 50%;
-}
-
-.more-btn:hover {
-    opacity: 0.8;
-}
-
-/* ------------------------------------------------------------------ */
-/* News リストアイテム（左側） */
-/* ------------------------------------------------------------------ */
-.list-item {
-    padding: 20px 0;
-    border-bottom: 1px solid #333;
-}
-
-.item-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.date-text {
-    font-family: monospace;
-    font-weight: bold;
-    color: #eee;
-    margin-right: 10px;
-}
-
-/* タグの共通スタイル */
-.tag {
-    font-size: 0.7em;
-    font-weight: bold;
-    padding: 2px 10px;
-    border-radius: 50px;
-    color: #121212;
-}
-
-.tag-yellow { background-color: #ffcc00; }
-.tag-gray   { background-color: #666; color: white; }
-.tag-pink   { background-color: #ff85a1; }
-.tag-blue   { background-color: #7289da; color: white; }
-.tag-purple { background-color: #8c5af7; color: white; }
-
-.item-link {
-    color: #f4f4f4;
-    text-decoration: none;
-    font-size: 0.95em;
-    line-height: 1.5;
-    transition: 0.2s;
-}
-
-.item-link:hover {
-    color: #7289da;
-}
-
-/* ------------------------------------------------------------------ */
-/* Blog リストアイテム（右側・縦日付レイアウト） */
-/* ------------------------------------------------------------------ */
-.blog-item {
-    display: flex;
-    gap: 20px;
-    padding: 20px 0;
-    border-bottom: 1px solid #333;
-}
-
-.vertical-date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-right: 1px solid #444;
-    padding-right: 20px;
-    min-width: 70px;
-}
-
-.v-year { font-size: 0.7em; color: #888; }
-.v-day  { font-size: 1.3em; font-weight: bold; color: #eee; line-height: 1; margin: 2px 0; }
-.v-week { font-size: 0.7em; color: #888; font-weight: bold; }
-
-.blog-content {
-    flex: 1;
-}
-
-/* ------------------------------------------------------------------ */
-/* レスポンシブ対応 (スマホで1カラムにする) */
-/* ------------------------------------------------------------------ */
-@media (max-width: 900px) {
-    .news-blog-container {
-        flex-direction: column;
-        gap: 60px;
-    }
+    section { padding: 50px 5%; }
+    .contact-card { min-width: 100%; }
 }
