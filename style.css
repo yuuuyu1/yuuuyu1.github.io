@@ -1,5 +1,5 @@
 /* ================================================================== */
-/* 1. 基本設定 & 共通レイアウト
+/* 1. 全ページ共通：基本設定 & レイアウト
 /* ================================================================== */
 * {
     margin: 0;
@@ -15,9 +15,9 @@ body {
     overflow-x: hidden;
 }
 
-/* コンテンツの土台 */
+/* コンテンツの土台（すべてのページで共通） */
 main {
-    padding-top: 80px; /* ヘッダーの高さ分 */
+    padding-top: 80px; 
     min-height: 100vh;
     width: 100%;
 }
@@ -26,7 +26,6 @@ section {
     padding: 80px 5%;
     max-width: 1100px;
     margin: 0 auto;
-    width: 100%;
 }
 
 /* ================================================================== */
@@ -51,7 +50,6 @@ header {
 .logo {
     font-size: 1.3em;
     font-weight: bold;
-    letter-spacing: 1px;
 }
 
 nav ul {
@@ -64,10 +62,9 @@ nav ul li a {
     text-decoration: none;
     color: #f4f4f4;
     font-size: 0.95rem;
-    font-weight: 500;
-    transition: color 0.3s;
     position: relative;
     padding-bottom: 5px;
+    transition: 0.3s;
 }
 
 nav ul li a:after {
@@ -90,7 +87,6 @@ nav ul li a:hover:after, nav ul li a.active:after {
     transform: scaleX(1);
 }
 
-/* ハンバーガーメニュー (スマホ用) */
 .menu-toggle {
     display: none;
     background: none;
@@ -101,167 +97,126 @@ nav ul li a:hover:after, nav ul li a.active:after {
 }
 
 /* ================================================================== */
-/* 3. コンタクトページ専用スタイル (Steps & Q&A)
+/* 3. ホームページ専用 (Hero / News / Blog)
 /* ================================================================== */
 
-/* 導入文 */
-.contact-intro {
+/* ヒーローセクション */
+.hero-section {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding-top: 60px;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
-.contact-intro h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: 900;
+.hero-section h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; margin-bottom: 20px; }
+.hero-section p { color: #aaa; margin-bottom: 40px; }
+
+/* News & Blog コンテナ */
+.news-blog-wrapper { padding: 60px 0; }
+.news-blog-container { display: flex; gap: 40px; }
+.news-column, .blog-column { flex: 1; }
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
     margin-bottom: 20px;
 }
 
-.intro-text {
-    max-width: 700px;
-    margin: 0 auto;
-    color: #aaa;
-}
-
-/* ステップ表示 (Steps) */
-.workflow-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin: 40px 0;
-}
-
-.workflow-step {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 30px;
-    border-radius: 20px;
-    border: 1px solid #333;
-    transition: 0.3s;
-    text-align: left;
-}
-
-.workflow-step:hover {
-    transform: translateY(-5px);
-    border-color: #7289da;
-    background: rgba(114, 137, 218, 0.05);
-}
-
-.step-num {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: #7289da;
-    margin-bottom: 10px;
-    opacity: 0.6;
-}
-
-/* コンタクトカード */
-.card-container {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    margin: 50px 0;
-}
-
-.contact-card {
-    background: #1e1e1e;
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid #333;
-    flex: 1;
-    min-width: 300px;
-    max-width: 450px;
-    text-align: center;
-}
-
-.card-button {
-    display: inline-block;
-    width: 100%;
-    padding: 15px;
-    margin-top: 25px;
-    border-radius: 12px;
+/* ピンクのMoreボタン */
+.more-btn {
+    background-color: #ff5e7e;
+    color: white;
     text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
+    font-size: 0.8em;
+    padding: 4px 15px 4px 35px;
+    border-radius: 50px;
+    position: relative;
+}
+.more-btn::before {
+    content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px; background: white; border-radius: 50%;
 }
 
-.discord-button { background-color: #7289da; color: white; border: none; cursor: pointer; font-size: 1rem;}
-.x-button { background-color: #fff; color: #000; }
+/* Blogの日付レイアウト */
+.blog-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #333; }
+.vertical-date { display: flex; flex-direction: column; align-items: center; border-right: 1px solid #444; padding-right: 20px; min-width: 70px; }
+.v-day { font-size: 1.3em; font-weight: bold; }
 
-/* Q&Aセクション */
-.faq-container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: left;
-}
+/* ================================================================== */
+/* 4. 自己紹介ページ専用 (Profile / Skills)
+/* ================================================================== */
+.profile-section { display: flex; gap: 40px; align-items: center; margin-bottom: 60px; }
+.profile-image { width: 180px; height: 180px; border-radius: 50%; border: 4px solid #7289da; object-fit: cover; }
 
-.faq-item {
-    border-bottom: 1px solid #333;
-    padding: 25px 0;
-}
-
-.faq-question {
-    color: #7289da;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
+.skills-list ul {
+    list-style: none;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
-
-.faq-answer {
-    color: #ccc;
-    line-height: 1.8;
-}
+.skills-list li { background: #2a2a2a; padding: 5px 15px; border-radius: 5px; font-size: 0.9em; }
 
 /* ================================================================== */
-/* 4. アニメーション & その他
+/* 5. コンタクトページ専用 (Steps / Q&A)
 /* ================================================================== */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-}
+.workflow-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin: 40px 0; }
+.workflow-step { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; border: 1px solid #333; transition: 0.3s; }
+.workflow-step:hover { border-color: #7289da; background: rgba(114, 137, 218, 0.05); }
+.step-num { color: #7289da; font-weight: 900; font-size: 1.5rem; opacity: 0.5; }
 
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
+.card-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 40px 0; }
+.contact-card { background: #1e1e1e; padding: 30px; border-radius: 15px; border: 1px solid #333; flex: 1; min-width: 280px; text-align: center; }
 
-/* 見出し共通 */
-.section-title-center {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-.section-subtitle-center {
-    text-align: center;
-    color: #777;
-    margin-bottom: 50px;
-}
+.faq-container { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid #333; padding: 20px 0; }
+.faq-question { color: #7289da; font-weight: bold; margin-bottom: 10px; }
 
 /* ================================================================== */
-/* 5. レスポンシブ (スマホ対応)
+/* 6. ボタン & 共通装飾
+/* ================================================================== */
+.button {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #7289da;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+.button:hover { background-color: #5b6fb6; transform: translateY(-2px); }
+
+.discord-button { background-color: #7289da; color: white; width: 100%; margin-top: 15px;}
+.x-button { background-color: #fff; color: #000; width: 100%; margin-top: 15px;}
+
+.reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* 見出し */
+.section-title-center { text-align: center; font-size: 2rem; margin-bottom: 10px; }
+.section-subtitle-center { text-align: center; color: #666; margin-bottom: 40px; }
+
+/* ================================================================== */
+/* 7. レスポンシブ (モバイル対応)
 /* ================================================================== */
 @media (max-width: 768px) {
     .menu-toggle { display: block; }
-    
     nav#main-nav {
-        display: none;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: #1e1e1e;
-        flex-direction: column;
-        padding: 20px 0;
-        border-bottom: 1px solid #333;
+        display: none; position: absolute; top: 60px; left: 0; width: 100%;
+        background: #1e1e1e; flex-direction: column; padding: 20px; border-bottom: 1px solid #333;
     }
-
     nav#main-nav.nav-open { display: flex; }
-    nav ul { flex-direction: column; align-items: center; gap: 15px; }
-    
-    section { padding: 50px 5%; }
-    .contact-card { min-width: 100%; }
+    nav ul { flex-direction: column; align-items: center; }
+
+    .news-blog-container, .profile-section { flex-direction: column; }
+    .hero-section h1 { font-size: 2.2rem; }
 }
