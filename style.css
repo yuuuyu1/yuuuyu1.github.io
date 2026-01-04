@@ -265,7 +265,6 @@ main:not(.hero-section) {
 
 /* ================================================================== */
 /* 3. ホームページ (index.html) スタイル 
-   ヒーロー、ニュース、ブログセクション
 /* ================================================================== */
 
 /* --- 3-1. ヒーローセクション (Pattern A) --- */
@@ -511,6 +510,107 @@ main:not(.hero-section) {
     .news-blog-container { flex-direction: column; gap: 50px; }
     .hero-actions { flex-direction: column; width: 100%; }
     .button { width: 100%; text-align: center; }
+}
+
+/* --- 悩み解決セクション --- */
+.problem-section {
+    padding: 60px 5%;
+    background-color: #1a1a1a;
+    text-align: center;
+}
+
+.section-title-small {
+    font-size: 1.5rem;
+    color: #7289da;
+    margin-bottom: 30px;
+}
+
+.problem-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.problem-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    border: 1px solid #333;
+}
+
+.problem-item span {
+    color: #7289da;
+    margin-right: 10px;
+}
+
+.problem-lead {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #eee;
+}
+
+/* --- News & Blog の強調 --- */
+.blog-column.highlight {
+    background: rgba(114, 137, 218, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(114, 137, 218, 0.2);
+}
+
+/* --- 実績 & お客様の声 --- */
+.trust-section {
+    padding: 80px 5%;
+    background-color: #0f0f0f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.voice-container {
+    max-width: 700px;
+    width: 100%;
+}
+
+.voice-card {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 20px;
+    position: relative;
+    border-left: 5px solid #7289da;
+}
+
+.voice-card p {
+    font-style: italic;
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.voice-author {
+    display: block;
+    text-align: right;
+    font-size: 0.85rem;
+    color: #7289da;
+    font-weight: bold;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    .problem-grid {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .problem-item {
+        width: 100%;
+    }
+    .news-blog-container {
+        flex-direction: column;
+    }
 }
 
 /* ------------------------------------------------------------------ */
