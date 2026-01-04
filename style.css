@@ -133,35 +133,135 @@ main:not(.hero-section) {
     font-size: 1.1em;
 }
 
-<header id="main-header">
-    </header>
+/* === CTAセクションの刷新デザイン === */
+.cta-section {
+    padding: 100px 5% 150px; /* 下に余裕を持たせる */
+    display: flex;
+    justify-content: center;
+}
 
-<main>
-    <section class="hero-section">
-        </section>
+.cta-card {
+    background: linear-gradient(145deg, #1e1e1e, #121212);
+    border: 1px solid #333;
+    border-radius: 24px;
+    padding: 60px 40px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
 
-    <section class="expertise-section reveal">
-        </section>
+/* 背景に薄い光の演出 */
+.cta-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(114, 137, 218, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
 
-    <section class="news-blog-wrapper reveal">
-        </section>
+.cta-card h2 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #7289da);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    <section class="cta-section reveal">
-        <div class="cta-content">
-            <h2>Let's build your community.</h2>
-            <p>理想のDiscordサーバーを形にしませんか？<br>設計の相談からBotの導入まで、幅広くサポートします。</p>
-            
-            <div class="cta-actions">
-                <a href="contact.html" class="button button-lg">お問い合わせはこちら</a>
-                <button class="copy-id-btn" onclick="copyDiscordID()">
-                    <i class="fab fa-discord"></i>
-                    <span id="id-text">yuuuyugbp</span>
-                    <span class="tooltip" id="copy-tooltip">IDをコピー</span>
-                </button>
-            </div>
-        </div>
-    </section>
-</main>
+.cta-card p {
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.cta-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Discord ID コピーボタンのデザイン */
+.copy-id-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #444;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.copy-id-btn:hover {
+    background: rgba(114, 137, 218, 0.1);
+    border-color: #7289da;
+    transform: translateY(-2px);
+}
+
+.copy-id-btn i {
+    color: #7289da;
+    font-size: 1.2rem;
+}
+
+/* ツールチップの改善 */
+.tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #7289da;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+
+.tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    bottom: 130%;
+}
+
+/* スマホ対応の微調整 */
+@media (max-width: 768px) {
+    .cta-card {
+        padding: 40px 20px;
+    }
+    .cta-actions {
+        flex-direction: column;
+    }
+    .copy-id-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* スクロールアニメーション用の設定 */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* ================================================================== */
 /* 3. ホームページ (index.html) スタイル 
