@@ -667,6 +667,58 @@ main:not(.hero-section) {
     margin-top: auto;
 }
 
+/* --- 見出しの表現を優しく --- */
+.section-subtitle-center {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: -15px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* --- Steps (Workflowの書き換え) --- */
+.workflow-step {
+    background: rgba(255, 255, 255, 0.03); /* 少し透けさせて柔らかく */
+    padding: 30px;
+    border-radius: 20px; /* 角をさらに丸く */
+    border-top: none;
+    border: 1px solid #333;
+    transition: transform 0.3s ease;
+}
+
+.workflow-step:hover {
+    transform: translateY(-5px);
+    border-color: #7289da;
+}
+
+.step-num {
+    color: #7289da;
+    opacity: 0.5;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* --- Q&A (FAQの書き換え) --- */
+.faq-item {
+    background: none; /* 背景を抜いてシンプルに */
+    border: none;
+    border-bottom: 1px solid #333;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.faq-question {
+    background: none;
+    padding: 25px 10px 10px;
+    font-size: 1.1rem;
+    color: #7289da;
+}
+
+.faq-answer {
+    padding: 0 10px 25px;
+    color: #bbb;
+}
+
 /* --- コンタクトカードのブランドカラー定義 --- */
 
 /* Discordボタン */
